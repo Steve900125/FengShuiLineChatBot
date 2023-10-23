@@ -12,16 +12,27 @@ import json
 # Line bot SDK import
 #============================================================================#
 
-from linebot import LineBotApi, WebhookHandler
-# LineBotApi : 是用於建立和管理 Line 機器人的主要介面
-# WebhookHandler : 用於處理 Line 機器人的 Webhook 請求
-# 當有新的事件（例如用戶發送消息）發生時，Line 伺服器向你的應用程式發送的 HTTP POST 請求。
-from linebot.exceptions import InvalidSignatureError
-# InvalidSignatureError : 用於處理 Line Webhook 的簽名驗證錯誤
-from linebot.models import MessageEvent, TextMessage, TextSendMessage
-# MessageEvent : 表示 Line 機器人接收到的訊息事件
-# TextMessage :  Line Bot 於表示文字訊息，使用這個類別來處理和回覆文字訊息
-# TextSendMessage : 建立要發送的文字訊，將這個訊息傳送回 Line 伺服器，以回應用戶的請求
+from flask import Flask, request, abort
+
+from linebot.v3 import (
+    WebhookHandler
+)
+from linebot.v3.exceptions import (
+    InvalidSignatureError
+)
+from linebot.v3.messaging import (
+    Configuration,
+    ApiClient,
+    MessagingApi,
+    ReplyMessageRequest,
+    TextMessage
+)
+from linebot.v3.webhooks import (
+    MessageEvent,
+    TextMessageContent
+)
+
+app = Flask(__name__)
 
 # Api key setting
 #============================================================================#
@@ -40,8 +51,10 @@ line_api = os.getenv("LINE_BOT_API_KEY" , LINE_BOT_API_KEY)
 secrect_api = os.getenv("CHANNEL_SECRECT_KEY" , CHANNEL_SECRECT_KEY)
 # 取得 api key
 
-line_bot_api = LineBotApi(line_api)
+configuration = Configuration(access_token=line_api)
+# 'MY_CHANNEL_ACCESS_TOKEN'
 handler = WebhookHandler(secrect_api)
+# 'MY_CHANNEL_SECRET'
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5050)
@@ -49,23 +62,35 @@ if __name__ == '__main__':
 # App route
 #============================================================================#
 
-# 當接收到一個 POST 請求時，它將從請求中獲取特定的標頭和數據，然後嘗試處理這些數據。
-# 如果在處理過程中遇到任何問題，它將返回一個 400 Bad Request 的 HTTP 狀態碼。如果一切正常，它將返回 'OK' 字符串。
-app.route("/callback" , methods = ["POST"])
-def callbake():
+@app.route("/callback", methods=['POST'])
+def callback():
+    # get X-Line-Signature header value
     signature = request.headers['X-Line-Signature']
+
+    # get request body as text
     body = request.get_data(as_text=True)
+    app.logger.info("Request body: " + body)
+
+    # handle webhook body
     try:
-        handler.handle(body,signature)
+        handler.handle(body, signature)
     except InvalidSignatureError:
+        app.logger.info("Invalid signature. Please check your channel access token/channel secret.")
         abort(400)
+
     return 'OK'
 
-# 當使用者傳送訊息給Line Bot時，會觸發MessageEvent事件，這裡僅處理收到的文字訊息
-@handler.add(MessageEvent , message = TextMessage)
+
+@handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
-    line_bot_api.replay_message(event.reply_token,
-        TextMessage(text = event.message.text))
+    with ApiClient(configuration) as api_client:
+        line_bot_api = MessagingApi(api_client)
+        line_bot_api.reply_message_with_http_info(
+            ReplyMessageRequest(
+                reply_token=event.reply_token,
+                messages=[TextMessage(text=event.message.text)]
+            )
+        )
 
 @app.route("/hi")
 def hi():
