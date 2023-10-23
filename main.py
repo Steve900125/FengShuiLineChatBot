@@ -71,4 +71,12 @@ def handle_message(event):
 def hi():
     return 'hi'
 
+@app.route("/")
+def home():
+    return 'You are in home'
+
+@app.route("/apikey")
+def apikey_check():
+    return 'line :' + line_api + '\n secrect_api:' + secrect_api
+
 
