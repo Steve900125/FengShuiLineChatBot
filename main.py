@@ -92,6 +92,11 @@ def handle_message(event):
             )
         )
         print(type(event.message.text))
+        print(event.message.text)
+        print(type(event))
+        print(f'Event: {event}')
+        print(type(event.message))
+        print(event.message)
         
 @app.route("/hi")
 def hi():
