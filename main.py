@@ -89,6 +89,7 @@ def handle_message(event):
     with ApiClient(configuration) as api_client:
 
         url = 'https://api.line.me/v2/bot/profile/' + event.source.user_id
+        # 用 
         headers = {
             'Authorization': 'Bearer ' + secrect_api
             }
@@ -97,16 +98,14 @@ def handle_message(event):
         user_name = 'Hello !'
         if response.status_code == 200:
             user_profile = response.json()
-            user_name += user_profile['displayNam']
+            user_name = user_name + user_profile['displayName'] + " 以下是您的訊息紀錄： "
             
-
-        
         
         line_bot_api = MessagingApi(api_client)
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
                 reply_token = event.reply_token,
-                messages=[TextMessage(text = user_name + event.message.text + event.source.user_id)]
+                messages=[TextMessage(text = user_name + event.message.text)]
             )
         )
 
