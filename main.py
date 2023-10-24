@@ -91,7 +91,7 @@ def handle_message(event):
                 messages=[TextMessage(text = event.message.text)]
             )
         )
-        return "TextMessage(text = event.message.text) : " + TextMessage(text = event.message.text) + 'event.message.text'
+        print("TextMessage(text = event.message.text) : " + TextMessage(text = event.message.text) + 'event.message.text')
 
 @app.route("/hi")
 def hi():
@@ -109,5 +109,7 @@ def apikey_check():
 def test():
     result = ''
     # First SQL
+    print('test')
+    return 'this is test'
 
 
