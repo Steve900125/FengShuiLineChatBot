@@ -87,10 +87,11 @@ def handle_message(event):
         line_bot_api = MessagingApi(api_client)
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
-                reply_token=event.reply_token,
-                messages=[TextMessage(text=event.message.text)]
+                reply_token = event.reply_token,
+                messages=[TextMessage(text = event.message.text)]
             )
         )
+        return "TextMessage(text = event.message.text) : " + TextMessage(text = event.message.text) + 'event.message.text'
 
 @app.route("/hi")
 def hi():
@@ -103,5 +104,10 @@ def home():
 @app.route("/apikey")
 def apikey_check():
     return 'line :' + line_api + '\n secrect_api:' + secrect_api
+
+@app.route("/test")
+def test():
+    result = ''
+    # First SQL
 
 
