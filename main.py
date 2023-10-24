@@ -91,7 +91,7 @@ def handle_message(event):
         url = 'https://api.line.me/v2/bot/profile/' + event.source.user_id
         # 用 
         headers = {
-            'Authorization': 'Bearer ' + secrect_api
+            'Authorization': 'Bearer ' + line_api
             }
         response = requests.get(url, headers = headers)
 
