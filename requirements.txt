@@ -3,3 +3,4 @@ gunicorn
 line-bot-sdk
 python-dotenv
 SQLAlchemy
+requests

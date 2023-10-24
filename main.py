@@ -6,8 +6,14 @@ from flask import request,abort
 # reques : 處理 HTTP 請求
 # abort : 處理錯誤情況 ex: 404 not found
 
+if __name__ == '__main__':
+    app.run(host='0.0.0.0',port=5050)
+
 import json
 # 載入 json 標準函式庫，處理回傳的資料格式
+
+import requests
+# 用來取得外部連結 URL API 資料
 
 # Line bot SDK import
 #============================================================================#
@@ -56,9 +62,6 @@ configuration = Configuration(access_token=line_api)
 handler = WebhookHandler(secrect_api)
 # 'MY_CHANNEL_SECRET'
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5050)
-
 # App route
 #============================================================================#
 
@@ -84,19 +87,38 @@ def callback():
 @handler.add(MessageEvent, message=TextMessageContent)
 def handle_message(event):
     with ApiClient(configuration) as api_client:
+
+        url = 'https://api.line.me/v2/bot/profile/' + event.source.user_id
+        headers = {
+            'Authorization': 'Bearer ' + secrect_api
+            }
+        response = requests.get(url, headers = headers)
+
+        user_name = 'Hello !'
+        if response.status_code == 200:
+            user_profile = response.json()
+            user_name += user_profile['displayNam']
+            
+
+        
+        
         line_bot_api = MessagingApi(api_client)
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
                 reply_token = event.reply_token,
-                messages=[TextMessage(text = event.message.text)]
+                messages=[TextMessage(text = user_name + event.message.text + event.source.user_id)]
             )
         )
+
         print(type(event.message.text))
         print(event.message.text)
         print(type(event))
         print(f'Event: {event}')
         print(type(event.message))
         print(event.message)
+        print('user id' + event.source.user_id)
+
+        
         
 @app.route("/hi")
 def hi():
