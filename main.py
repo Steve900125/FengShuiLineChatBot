@@ -91,8 +91,7 @@ def handle_message(event):
                 messages=[TextMessage(text = event.message.text)]
             )
         )
-        print("TextMessage(text = event.message.text) : " + str(TextMessage(text = event.message.text)) + 'event' + str(event))
-
+        
 @app.route("/hi")
 def hi():
     return 'hi'
