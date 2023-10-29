@@ -62,13 +62,15 @@ configuration = Configuration(access_token=line_api)
 handler = WebhookHandler(secrect_api)
 # 'MY_CHANNEL_SECRET'
 
+count = 0
+# 測試數量限制 5 
+
 # ChatGPT call import
 #============================================================================#
 from chatgpt_response import call_chatgpt
 
 
-count = 0
-# 測試數量限制 5 
+
 
 # callback : Hang on the web address on Line Webhook
 #============================================================================#
@@ -119,9 +121,8 @@ def handle_message(event):
 
 # Call chatGPT to answer the question
 # Maybe can select which models suit the question type
-#============================================================================#
-        
-        
+#============================================================================#   
+        global count
 
         if event.message.type == 'text' and count < 5:
             ans = call_chatgpt(user_question = event.message.text , user_data = [] ,user_id = '')
