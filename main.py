@@ -125,14 +125,13 @@ def handle_message(event):
         global count
 
         if event.message.type == 'text' and count < 5:
-            ans = call_chatgpt(user_question = event.message.text , user_data = [] ,user_id = '')
+            #ans = call_chatgpt(user_question = event.message.text , user_data = [] ,user_id = '')
+            ans = 'chatGPT'
             count = count + 1
         elif event.message.type != 'text':
             ans = '嗨目前只能接受文字回覆喔 你的回覆種類是' + event.message.type
         else:
             ans = '今日使用上限已額滿'
-
-        
 
 # Return response to user
 #============================================================================#
@@ -140,10 +139,11 @@ def handle_message(event):
         line_bot_api.reply_message_with_http_info(
             ReplyMessageRequest(
                 reply_token = event.reply_token,
-                messages=[TextMessage(text = user_name + ans)]
+                messages=[TextMessage(text = user_name + ans + event.message.type)]
                 # 回傳資料的地方
             )
         )
+        print(event.message)
 
 
 @app.route("/testweb")
