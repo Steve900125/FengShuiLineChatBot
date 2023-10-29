@@ -32,7 +32,7 @@ from linebot.v3.messaging import (
     MessagingApi,
     ReplyMessageRequest,
     TextMessage,
-    StickerMessage
+    ImageMessage
 )
 from linebot.v3.webhooks import (
     MessageEvent,
@@ -165,8 +165,8 @@ def handle_message(event):
         print(event.message)
         print('user id' + event.source.user_id)
 
-@handler.add(MessageEvent, message= StickerMessage)
-def handle_sticker_message(event):
+@handler.add(MessageEvent, message= ImageMessage)
+def handle_image_message(event):
     with ApiClient(configuration) as api_client:
         # 處理貼圖消息的代碼
         try :
@@ -174,7 +174,7 @@ def handle_sticker_message(event):
                 line_bot_api.reply_message_with_http_info(
                     ReplyMessageRequest(
                         reply_token = event.reply_token,
-                        messages=[TextMessage(text = '你好棒貼圖')]
+                        messages=[TextMessage(text = '你好棒 照片')]
                         # 回傳資料的地方
                     )
                 )
