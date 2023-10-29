@@ -32,11 +32,12 @@ from linebot.v3.messaging import (
     MessagingApi,
     ReplyMessageRequest,
     TextMessage,
-    ImageMessage
+    
 )
 from linebot.v3.webhooks import (
     MessageEvent,
-    TextMessageContent
+    TextMessageContent,
+    ImageMessageContent
 )
 
 app = Flask(__name__)
@@ -165,7 +166,7 @@ def handle_message(event):
         print(event.message)
         print('user id' + event.source.user_id)
 
-@handler.add(MessageEvent, message= ImageMessage)
+@handler.add(MessageEvent, message= ImageMessageContent)
 def handle_image_message(event):
     with ApiClient(configuration) as api_client:
         # 處理貼圖消息的代碼
