@@ -120,6 +120,8 @@ def handle_message(event):
             print('Get user name fail')
             print(e)
 
+        
+
 # Database load data
 # Maybe lode user data by ID then check meassages
 #============================================================================#
@@ -147,10 +149,15 @@ def handle_message(event):
 #============================================================================#
         try :
             line_bot_api = MessagingApi(api_client)
+            line_bot_api.get_profile()
+            profile = line_bot_api.get_profile(event.source.user_id)
+            api_name = profile.display_name
+            print(profile)
+
             line_bot_api.reply_message_with_http_info(
                 ReplyMessageRequest(
                     reply_token = event.reply_token,
-                    messages=[TextMessage(text = user_name + ans + event.message.type)]
+                    messages=[TextMessage(text = user_name + ans  + api_name )]
                     # 回傳資料的地方
                 )
             )
