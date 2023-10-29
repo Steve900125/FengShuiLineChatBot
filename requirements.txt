@@ -4,3 +4,5 @@ line-bot-sdk
 python-dotenv
 SQLAlchemy
 requests
+openai
+langchain
