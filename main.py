@@ -55,11 +55,11 @@ load_dotenv()
 LINE_BOT_API_KEY = os.environ.get("LINE_BOT_API_KEY")
 CHANNEL_SECRECT_KEY = os.environ.get("SLINE_BOT_API_KEY")
 
-line_api = os.getenv("LINE_BOT_API_KEY" , LINE_BOT_API_KEY)
+line_api_value = os.getenv("LINE_BOT_API_KEY" , LINE_BOT_API_KEY)
 secrect_api = os.getenv("CHANNEL_SECRECT_KEY" , CHANNEL_SECRECT_KEY)
 # 取得 api key
 
-configuration = Configuration(access_token=line_api)
+configuration = Configuration(access_token=line_api_value )
 # 'MY_CHANNEL_ACCESS_TOKEN'
 handler = WebhookHandler(secrect_api)
 # 'MY_CHANNEL_SECRET'
@@ -107,7 +107,7 @@ def handle_message(event):
             url = 'https://api.line.me/v2/bot/profile/' + event.source.user_id
             # 把傳入的使用者 id 當作參數用 api 去取得用戶資料名稱
             headers = {
-                'Authorization': 'Bearer ' + line_api
+                'Authorization': 'Bearer ' + line_api_value 
                 }
             # channel access token 授權
             response = requests.get(url, headers = headers)
@@ -194,8 +194,11 @@ def handle_image_message(event):
 
 @app.route("/testweb")
 def testweb():
-    gpt_ans = call_chatgpt(user_question = '請問狗狗跑多快？' , user_data = [] ,user_id = '')
-    return gpt_ans
+    #gpt_ans = call_chatgpt(user_question = '請問狗狗跑多快？' , user_data = [] ,user_id = '')
+    api_client = ApiClient(configuration)
+    line_bot_api = MessagingApi(api_client)
+    profile = line_bot_api.get_profile('U50103dd3166e13e2ffa18b6b2266c77f')
+    return profile
 
 
     
