@@ -150,9 +150,7 @@ def handle_message(event):
 # Return response to user
 #============================================================================#
         try :
-            line_bot_api = MessagingApi(api_client)
-            line_bot_api.get_profile()
-            # api get name       
+            line_bot_api = MessagingApi(api_client)     
             line_bot_api.reply_message_with_http_info(
                 ReplyMessageRequest(
                     reply_token = event.reply_token,
