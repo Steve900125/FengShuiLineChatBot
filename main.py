@@ -131,7 +131,7 @@ def handle_message(event):
         elif event.message.type == 'sticker':
             ans = '嗨目前只能接受文字回覆喔 你的回覆種類是' + event.message.type
         else:
-            ans = '今日使用上限已額滿'
+            ans = '今日使用上限已額滿' 
 
 # Return response to user
 #============================================================================#
@@ -143,7 +143,14 @@ def handle_message(event):
                 # 回傳資料的地方
             )
         )
+        
+        print(type(event.message.text))
+        print(event.message.text)
+        print(type(event))
+        print(f'Event: {event}')
+        print(type(event.message))
         print(event.message)
+        print('user id' + event.source.user_id)
 
 
 @app.route("/testweb")
