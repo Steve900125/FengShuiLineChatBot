@@ -181,6 +181,14 @@ def handle_image_message(event):
         except Exception as e:
                 print('LineBot return fail')
                 print(e)
+        
+        print(type(event.message.text))
+        print(event.message.text)
+        print(type(event))
+        print(f'Event: {event}')
+        print(type(event.message))
+        print(event.message)
+        print('user id' + event.source.user_id)
 
 
 @app.route("/testweb")
