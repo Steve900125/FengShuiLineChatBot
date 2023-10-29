@@ -31,7 +31,8 @@ from linebot.v3.messaging import (
     ApiClient,
     MessagingApi,
     ReplyMessageRequest,
-    TextMessage
+    TextMessage,
+    StickerMessage
 )
 from linebot.v3.webhooks import (
     MessageEvent,
@@ -132,8 +133,6 @@ def handle_message(event):
                 #ans = call_chatgpt(user_question = event.message.text , user_data = [] ,user_id = '')
                 ans = 'chatGPT'
                 count = count + 1
-            elif event.message.type == 'sticker':
-                ans = '嗨目前只能接受文字回覆喔 你的回覆種類是' + event.message.type
             else:
                 ans = '今日使用上限已額滿' 
         except Exception as e:
@@ -165,6 +164,23 @@ def handle_message(event):
         print(type(event.message))
         print(event.message)
         print('user id' + event.source.user_id)
+
+@handler.add(MessageEvent, message= StickerMessage)
+def handle_sticker_message(event):
+    with ApiClient(configuration) as api_client:
+        # 處理貼圖消息的代碼
+        try :
+                line_bot_api = MessagingApi(api_client)
+                line_bot_api.reply_message_with_http_info(
+                    ReplyMessageRequest(
+                        reply_token = event.reply_token,
+                        messages=[TextMessage(text = '你好棒貼圖')]
+                        # 回傳資料的地方
+                    )
+                )
+        except Exception as e:
+                print('LineBot return fail')
+                print(e)
 
 
 @app.route("/testweb")
