@@ -197,6 +197,7 @@ def handle_sticker_message(event):
                 )
             )
         except Exception as e:
+            line_bot_api = MessagingApi(api_client)
             line_bot_api.reply_message_with_http_info(
                     ReplyMessageRequest(
                         reply_token = event.reply_token,
