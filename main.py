@@ -32,12 +32,14 @@ from linebot.v3.messaging import (
     MessagingApi,
     ReplyMessageRequest,
     TextMessage,
+    StickerMessage,
     
 )
 from linebot.v3.webhooks import (
     MessageEvent,
     TextMessageContent,
-    ImageMessageContent
+    ImageMessageContent,
+    StickerMessageContent
 )
 
 app = Flask(__name__)
@@ -151,9 +153,8 @@ def handle_message(event):
             line_bot_api = MessagingApi(api_client)
             line_bot_api.get_profile()
             profile = line_bot_api.get_profile(event.source.user_id)
-            api_name = profile.display_name
-            print(profile)
-
+            api_name = profile.display_name    
+            # api get name       
             line_bot_api.reply_message_with_http_info(
                 ReplyMessageRequest(
                     reply_token = event.reply_token,
@@ -162,17 +163,11 @@ def handle_message(event):
                 )
             )
         except Exception as e:
-            print('LineBot return fail')
+            print('TextMessageContent Fail')
             print(e)
         
-        print(type(event.message.text))
-        print(event.message.text)
-        print(type(event))
-        print(f'Event: {event}')
-        print(type(event.message))
-        print(event.message)
-        print('user id' + event.source.user_id)
 
+# 當使用者傳送圖片觸發
 @handler.add(MessageEvent, message= ImageMessageContent)
 def handle_image_message(event):
     with ApiClient(configuration) as api_client:
@@ -182,21 +177,29 @@ def handle_image_message(event):
                 line_bot_api.reply_message_with_http_info(
                     ReplyMessageRequest(
                         reply_token = event.reply_token,
-                        messages=[TextMessage(text = '你好棒 照片')]
+                        messages=[TextMessage(text = '這是一張照片誒，但我看不懂拉哈哈')]
                         # 回傳資料的地方
                     )
                 )
         except Exception as e:
-                print('LineBot return fail')
+                print('LImageMessageContent Fail')
                 print(e)
-        
-        print(type(event.message.text))
-        print(event.message.text)
-        print(type(event))
-        print(f'Event: {event}')
-        print(type(event.message))
-        print(event.message)
-        print('user id' + event.source.user_id)
+
+
+@handler.add(MessageEvent, message=StickerMessageContent)
+def handle_sticker_message(event):
+    with ApiClient(configuration) as api_client:
+        line_bot_api = MessagingApi(api_client)
+        line_bot_api.reply_message(
+            ReplyMessageRequest(
+                reply_token=event.reply_token,
+                messages=[StickerMessage(
+                    package_id=event.message.package_id,
+                    sticker_id=event.message.sticker_id)
+                ]
+            )
+        )
+
 
 
 @app.route("/testweb")
