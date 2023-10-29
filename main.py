@@ -152,13 +152,11 @@ def handle_message(event):
         try :
             line_bot_api = MessagingApi(api_client)
             line_bot_api.get_profile()
-            profile = line_bot_api.get_profile(event.source.user_id)
-            api_name = profile.display_name    
             # api get name       
             line_bot_api.reply_message_with_http_info(
                 ReplyMessageRequest(
                     reply_token = event.reply_token,
-                    messages=[TextMessage(text = user_name + ans  + api_name )]
+                    messages=[TextMessage(text = user_name + ans )]
                     # 回傳資料的地方
                 )
             )
@@ -189,27 +187,38 @@ def handle_image_message(event):
 @handler.add(MessageEvent, message=StickerMessageContent)
 def handle_sticker_message(event):
     with ApiClient(configuration) as api_client:
-        line_bot_api = MessagingApi(api_client)
-        line_bot_api.reply_message(
-            ReplyMessageRequest(
-                reply_token=event.reply_token,
-                messages=[StickerMessage(
-                    package_id=event.message.package_id,
-                    sticker_id=event.message.sticker_id)
-                ]
+        try:
+            line_bot_api = MessagingApi(api_client)
+            line_bot_api.reply_message(
+                ReplyMessageRequest(
+                    reply_token=event.reply_token,
+                    messages=[StickerMessage(
+                        package_id=event.message.package_id,
+                        sticker_id=event.message.sticker_id)
+                    ]
+                )
             )
-        )
+        except Exception as e:
+            line_bot_api.reply_message_with_http_info(
+                    ReplyMessageRequest(
+                        reply_token = event.reply_token,
+                        messages=[TextMessage(text = '這是一張貼圖誒，但我看不懂拉哈哈')]
+                        # 回傳資料的地方
+                    )
+                )
+            print('StickerMessageContent Fail')
+            print(e)
 
 
 
 @app.route("/testweb")
 def testweb():
     #gpt_ans = call_chatgpt(user_question = '請問狗狗跑多快？' , user_data = [] ,user_id = '')
-    api_client = ApiClient(configuration)
-    line_bot_api = MessagingApi(api_client)
-    profile = line_bot_api.get_profile('U50103dd3166e13e2ffa18b6b2266c77f')
-    return profile
+    return 'I am testweb'
 
+@app.route("/")
+def root():
+    return '我好棒我正在運作'
 
     
 
