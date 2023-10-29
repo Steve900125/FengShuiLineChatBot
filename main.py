@@ -101,18 +101,22 @@ def handle_message(event):
     with ApiClient(configuration) as api_client:
 # 取得使用者名稱
 #============================================================================#
-        url = 'https://api.line.me/v2/bot/profile/' + event.source.user_id
-        # 把傳入的使用者 id 當作參數用 api 去取得用戶資料名稱
-        headers = {
-            'Authorization': 'Bearer ' + line_api
-            }
-        # channel access token 授權
-        response = requests.get(url, headers = headers)
+        try :
+            url = 'https://api.line.me/v2/bot/profile/' + event.source.user_id
+            # 把傳入的使用者 id 當作參數用 api 去取得用戶資料名稱
+            headers = {
+                'Authorization': 'Bearer ' + line_api
+                }
+            # channel access token 授權
+            response = requests.get(url, headers = headers)
 
-        user_name = 'Hello !'
-        if response.status_code == 200:
-            user_profile = response.json()
-            user_name = user_name + user_profile['displayName'] + " 以下是您的訊息紀錄： "   
+            user_name = 'Hello !'
+            if response.status_code == 200:
+                user_profile = response.json()
+                user_name = user_name + user_profile['displayName'] + " 以下是您的訊息紀錄： "   
+        except Exception as e:
+            print('Get user name fail')
+            print(e)
 
 # Database load data
 # Maybe lode user data by ID then check meassages
@@ -122,27 +126,37 @@ def handle_message(event):
 # Call chatGPT to answer the question
 # Maybe can select which models suit the question type
 #============================================================================#   
-        global count
-
-        if event.message.type == 'text' and count < 5:
-            #ans = call_chatgpt(user_question = event.message.text , user_data = [] ,user_id = '')
-            ans = 'chatGPT'
-            count = count + 1
-        elif event.message.type == 'sticker':
-            ans = '嗨目前只能接受文字回覆喔 你的回覆種類是' + event.message.type
-        else:
-            ans = '今日使用上限已額滿' 
+        try :
+            global count
+            if event.message.type == 'text' and count < 5:
+                #ans = call_chatgpt(user_question = event.message.text , user_data = [] ,user_id = '')
+                ans = 'chatGPT'
+                count = count + 1
+            elif event.message.type == 'sticker':
+                ans = '嗨目前只能接受文字回覆喔 你的回覆種類是' + event.message.type
+            else:
+                ans = '今日使用上限已額滿' 
+        except Exception as e:
+            ans = ''
+            print("Generate responses fail")
+            print(e)
+        
+        print(ans)
 
 # Return response to user
 #============================================================================#
-        line_bot_api = MessagingApi(api_client)
-        line_bot_api.reply_message_with_http_info(
-            ReplyMessageRequest(
-                reply_token = event.reply_token,
-                messages=[TextMessage(text = user_name + ans + event.message.type)]
-                # 回傳資料的地方
+        try :
+            line_bot_api = MessagingApi(api_client)
+            line_bot_api.reply_message_with_http_info(
+                ReplyMessageRequest(
+                    reply_token = event.reply_token,
+                    messages=[TextMessage(text = user_name + ans + event.message.type)]
+                    # 回傳資料的地方
+                )
             )
-        )
+        except Exception as e:
+            print('LineBot return fail')
+            print(e)
         
         print(type(event.message.text))
         print(event.message.text)
