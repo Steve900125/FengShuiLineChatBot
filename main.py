@@ -128,7 +128,7 @@ def handle_message(event):
             #ans = call_chatgpt(user_question = event.message.text , user_data = [] ,user_id = '')
             ans = 'chatGPT'
             count = count + 1
-        elif event.message.type != 'text':
+        elif event.message.type == 'sticker':
             ans = '嗨目前只能接受文字回覆喔 你的回覆種類是' + event.message.type
         else:
             ans = '今日使用上限已額滿'
