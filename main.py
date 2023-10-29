@@ -187,17 +187,6 @@ def handle_sticker_message(event):
     with ApiClient(configuration) as api_client:
         try:
             line_bot_api = MessagingApi(api_client)
-            line_bot_api.reply_message(
-                ReplyMessageRequest(
-                    reply_token=event.reply_token,
-                    messages=[StickerMessage(
-                        package_id=event.message.package_id,
-                        sticker_id=event.message.sticker_id)
-                    ]
-                )
-            )
-        except Exception as e:
-            line_bot_api = MessagingApi(api_client)
             line_bot_api.reply_message_with_http_info(
                     ReplyMessageRequest(
                         reply_token = event.reply_token,
@@ -205,6 +194,17 @@ def handle_sticker_message(event):
                         # 回傳資料的地方
                     )
                 )
+            # line_bot_api.reply_message(
+            #     ReplyMessageRequest(
+            #         reply_token=event.reply_token,
+            #         messages=[StickerMessage(
+            #             package_id=event.message.package_id,
+            #             sticker_id=event.message.sticker_id)
+            #         ]
+            #     )
+            # )
+        except Exception as e:
+            # BUG 
             print('StickerMessageContent Fail')
             print(e)
 
