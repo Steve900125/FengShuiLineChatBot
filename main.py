@@ -32,7 +32,6 @@ from linebot.v3.messaging import (
     MessagingApi,
     ReplyMessageRequest,
     TextMessage,
-    StickerMessage,
     
 )
 from linebot.v3.webhooks import (
@@ -149,12 +148,13 @@ def handle_message(event):
 
 # Return response to user
 #============================================================================#
+        rick_roll =['Never gonna give you up','Never gonna let you down']
         try :
             line_bot_api = MessagingApi(api_client)     
             line_bot_api.reply_message_with_http_info(
                 ReplyMessageRequest(
                     reply_token = event.reply_token,
-                    messages=[TextMessage(text = user_name + ans )]
+                    messages=[TextMessage(text = rick_roll[0]) , TextMessage(text = rick_roll[1]),TextMessage(text = user_name + ans )]
                     # 回傳資料的地方
                 )
             )
@@ -194,15 +194,6 @@ def handle_sticker_message(event):
                         # 回傳資料的地方
                     )
                 )
-            # line_bot_api.reply_message(
-            #     ReplyMessageRequest(
-            #         reply_token=event.reply_token,
-            #         messages=[StickerMessage(
-            #             package_id=event.message.package_id,
-            #             sticker_id=event.message.sticker_id)
-            #         ]
-            #     )
-            # )
         except Exception as e:
             # BUG 
             print('StickerMessageContent Fail')
