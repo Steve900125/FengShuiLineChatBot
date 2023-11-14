@@ -38,7 +38,7 @@ def save_data(user : dict ,  agent : dict):
         timestamp_dt = datetime.fromtimestamp(user['timestamp'] / 1000.0) 
 
         user_save_data = (user['user_id'],user['user_message'],timestamp_dt,)
-        agent_save_data = (user['user_id'],agent['user_message'],timestamp_dt,)
+        agent_save_data = (user['user_id'],agent['agent_message'],timestamp_dt,)
 
         cursor.execute(user_insert_sql , user_save_data)
         print('#user: '+ cursor.fetchall())
