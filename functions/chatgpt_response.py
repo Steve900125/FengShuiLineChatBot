@@ -28,7 +28,7 @@ def call_chatgpt( user_data : list , user_question : str , user_id : str):
 #============================================================================#
     try:
         response = openai.ChatCompletion.create(
-            model = "gpt-3.5-turbo",
+            model = "gpt-4",
             # This is the chat message from the user
             messages = messages  
             #functions = functions,

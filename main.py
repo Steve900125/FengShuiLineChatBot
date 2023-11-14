@@ -53,11 +53,9 @@ import os
 
 load_dotenv()
 # 載入 .env 檔
-LINE_BOT_API_KEY = os.environ.get("LINE_BOT_API_KEY")
-CHANNEL_SECRECT_KEY = os.environ.get("SLINE_BOT_API_KEY")
 
-line_api_value = os.getenv("LINE_BOT_API_KEY" , LINE_BOT_API_KEY)
-secrect_api = os.getenv("CHANNEL_SECRECT_KEY" , CHANNEL_SECRECT_KEY)
+line_api_value = os.getenv("LINE_BOT_API_KEY")
+secrect_api = os.getenv("CHANNEL_SECRECT_KEY")
 # 取得 api key
 
 configuration = Configuration(access_token=line_api_value )
@@ -70,9 +68,10 @@ count = 0
 
 # ChatGPT call import
 #============================================================================#
-from chatgpt_response import call_chatgpt
-
-
+from functions.chatgpt_response import call_chatgpt
+# postgresql call import
+#============================================================================#
+from functions.postgresql_function import save_data
 
 
 # callback : Hang on the web address on Line Webhook
@@ -157,11 +156,21 @@ def handle_message(event):
                     messages=[TextMessage(text = rick_roll[0]) , TextMessage(text = rick_roll[1]),TextMessage(text = user_name + ans )]
                     # 回傳資料的地方
                 )
-            )
+            )            
         except Exception as e:
             print('TextMessageContent Fail')
             print(e)
-        
+ # Save user and agent message
+#============================================================================# 
+        user = {
+            "user_id" : event.source.user_id , 
+            "user_message": event.message.text , 
+            "timestamp" : event.timestamp
+        }
+        agent = {
+            "agent_message" : ans 
+        }
+        save_data(user = user , agent = agent)
 
 # 當使用者傳送圖片觸發
 @handler.add(MessageEvent, message= ImageMessageContent)
