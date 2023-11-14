@@ -35,7 +35,7 @@ def save_data(user : dict ,  agent : dict):
         cursor = conn.cursor()
         
         # Formate
-        timestamp_dt = datetime.fromtimestamp(user['timestamp'])
+        timestamp_dt = datetime.fromtimestamp(user['timestamp'] / 1000.0) 
 
         user_save_data = (user['user_id'],user['user_message'],timestamp_dt,)
         agent_save_data = (user['user_id'],agent['user_message'],timestamp_dt,)
