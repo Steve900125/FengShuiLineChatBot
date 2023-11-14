@@ -6,3 +6,4 @@ SQLAlchemy
 requests
 openai
 langchain
+psycopg2
