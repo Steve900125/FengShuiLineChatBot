@@ -170,11 +170,8 @@ def handle_message(event):
         agent = {
             "agent_message" : ans 
         }
+        
         save_data(user = user , agent = agent)
-        print(type(event.source.user_id))
-        print(type(event.message.text))
-        print(type(event.timestamp))
-        print(type(ans))
 
 
 

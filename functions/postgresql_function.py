@@ -41,9 +41,9 @@ def save_data(user : dict ,  agent : dict):
         agent_save_data = (user['user_id'],agent['agent_message'],timestamp_dt,)
 
         cursor.execute(user_insert_sql , user_save_data)
-        print('#user: '+ cursor.fetchall())
+        print('#user: '+ str(cursor.fetchall()))
         cursor.execute(agent_insert_sql , agent_save_data)
-        print("#agent: "+ cursor.fetchall())
+        print("#agent: "+ str(cursor.fetchall()))
         conn.commit()
 
         cursor.close()
