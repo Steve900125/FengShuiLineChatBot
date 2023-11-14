@@ -171,6 +171,12 @@ def handle_message(event):
             "agent_message" : ans 
         }
         save_data(user = user , agent = agent)
+        print(type(event.source.user_id) + event.source.user_id )
+        print(type(event.message.text) + event.message.text )
+        print(type(event.timestamp) + event.timestamp )
+        print(type(ans) + ans )
+
+
 
 # 當使用者傳送圖片觸發
 @handler.add(MessageEvent, message= ImageMessageContent)
