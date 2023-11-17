@@ -1,16 +1,12 @@
 # Flask import
 #============================================================================#
 from flask import Flask
-app = Flask(__name__)
 from flask import request,abort
-# reques : 處理 HTTP 請求
-# abort : 處理錯誤情況 ex: 404 not found
 
+app = Flask(__name__)
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5050)
 
-import json
-# 載入 json 標準函式庫，處理回傳的資料格式
 
 import requests
 # 用來取得外部連結 URL API 資料
@@ -125,6 +121,7 @@ def handle_message(event):
 # Database load data
 # Maybe lode user data by ID then check meassages
 #============================================================================#
+        
      
 
 # Call chatGPT to answer the question
@@ -210,7 +207,6 @@ def handle_sticker_message(event):
             # BUG 
             print('StickerMessageContent Fail')
             print(e)
-
 
 
 @app.route("/testweb")
