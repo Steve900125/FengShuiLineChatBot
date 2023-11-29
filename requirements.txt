@@ -1,6 +1,6 @@
 flask
 gunicorn
-line-bot-sdk==3.5.0
+line-bot-sdk
 python-dotenv
 SQLAlchemy
 requests
