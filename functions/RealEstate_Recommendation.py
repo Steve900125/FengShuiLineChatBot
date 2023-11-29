@@ -64,14 +64,14 @@ class RealEstateRecommendationTool(BaseTool):
         return target
 
 
-    def _arun(self,city_county : Optional[str], district : Optional[str] ,price_upper_limit : Optional[int] , price_lower_limit : Optional[int]):
+    def _arun(self, city_county : Optional[str], district : Optional[str] ,price_upper_limit : Optional[int] , price_lower_limit : Optional[int]):
         raise NotImplementedError("This tool does not support async")
 
 
 #schema = RealEstateRecommendationInput.model_json_schema()
 #print(schema)
 
-#hi = RealEstateRecommendationTool
+#hi = RealEstateRecommendationTool()
 #ans = hi._run(self= hi,city_county =  "臺北市", district = "中山區", price_upper_limit = 2000 , price_lower_limit = 50)
 #print(ans)
     
