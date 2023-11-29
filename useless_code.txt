@@ -1,0 +1,62 @@
+# 當使用者傳送圖片觸發
+@handler.add(MessageEvent, message= ImageMessageContent)
+def handle_image_message(event):
+    with ApiClient(configuration) as api_client:
+        # 處理貼圖消息的代碼
+        try :
+                line_bot_api = MessagingApi(api_client)
+                line_bot_api.reply_message_with_http_info(
+                    ReplyMessageRequest(
+                        reply_token = event.reply_token,
+                        messages=[TextMessage(text = '這是一張照片誒，但我看不懂拉哈哈')]
+                        # 回傳資料的地方
+                    )
+                )
+        except Exception as e:
+                print('LImageMessageContent Fail')
+                print(e)
+
+
+
+@handler.add(MessageEvent, message=StickerMessageContent)
+def handle_sticker_message(event):
+    with ApiClient(configuration) as api_client:
+        try:
+            line_bot_api = MessagingApi(api_client)
+            line_bot_api.reply_message_with_http_info(
+                    ReplyMessageRequest(
+                        reply_token = event.reply_token,
+                        messages=[TextMessage(text = '這是一張貼圖誒，但我看不懂拉哈哈')]
+                        # 回傳資料的地方
+                    )
+                )
+        except Exception as e:
+            # BUG 
+            print('StickerMessageContent Fail')
+            print(e)
+
+@app.route("/testweb")
+def testweb():
+    #gpt_ans = call_chatgpt(user_question = '請問狗狗跑多快？' , user_data = [] ,user_id = '')
+    return 'I am testweb'
+
+@app.route("/")
+def root():
+    return '我好棒我正在運作'
+
+
+# weebhook test line responses
+try :
+            global count
+            if event.message.type == 'text' and count < 5:
+                #ans = call_chatgpt(user_question = event.message.text , user_data = [] ,user_id = '')
+                ans = 'chatGPT'
+                count = count + 1
+            else:
+                ans = '今日使用上限已額滿' 
+        except Exception as e:
+            ans = ''
+            print("Generate responses fail")
+            print(e)
+        
+        print(ans)

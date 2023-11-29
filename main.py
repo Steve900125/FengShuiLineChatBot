@@ -13,9 +13,6 @@ import requests
 
 # Line bot SDK import
 #============================================================================#
-
-from flask import Flask, request, abort
-
 from linebot.v3 import (
     WebhookHandler
 )
@@ -32,47 +29,47 @@ from linebot.v3.messaging import (
 )
 from linebot.v3.webhooks import (
     MessageEvent,
-    TextMessageContent,
-    ImageMessageContent,
-    StickerMessageContent
+    TextMessageContent
 )
-
-app = Flask(__name__)
 
 # Api key setting
 #============================================================================#
-
 from dotenv import load_dotenv
-# load_dotenv : 將敏感的帳密、主機位址或連線金鑰集中放在 .env 檔案隱藏資料 
 import os 
-# os : 提供了許多與作業系統交互的功能，包括讀取、寫入檔案，創建目錄，執行系統命令等
 
 load_dotenv()
-# 載入 .env 檔
-
 line_api_value = os.getenv("LINE_BOT_API_KEY")
 secrect_api = os.getenv("CHANNEL_SECRECT_KEY")
-# 取得 api key
+
 
 configuration = Configuration(access_token=line_api_value )
 # 'MY_CHANNEL_ACCESS_TOKEN'
 handler = WebhookHandler(secrect_api)
 # 'MY_CHANNEL_SECRET'
 
-count = 0
-# 測試數量限制 5 
 
 # ChatGPT call import
 #============================================================================#
-from functions.chatgpt_response import call_chatgpt
+# from functions.chatgpt_response import call_chatgpt
+
 # postgresql call import
 #============================================================================#
-from functions.postgresql_function import save_data
+from functions.postgresql_function import save_data , get_user_messages
+
+# LangChain function call 
+#============================================================================#
+# Import things that are needed generically
+from langchain.agents import AgentType, initialize_agent
+from langchain.chat_models import ChatOpenAI
+from functions.RealEstate_Recommendation import RealEstateRecommendationTool
+# gpt-3.5-turbo-0613
+from langchain.memory import ConversationBufferMemory
+from langchain.prompts import MessagesPlaceholder
+
 
 
 # callback : Hang on the web address on Line Webhook
 #============================================================================#
-
 @app.route("/callback", methods=['POST'])
 def callback():
     # get X-Line-Signature header value
@@ -98,6 +95,7 @@ def callback():
 def handle_message(event):
     with ApiClient(configuration) as api_client:
 # 取得使用者名稱
+# Keyword : Get user name / User Name / User ID 
 #============================================================================#
         try :
             url = 'https://api.line.me/v2/bot/profile/' + event.source.user_id
@@ -116,107 +114,87 @@ def handle_message(event):
             print('Get user name fail')
             print(e)
 
-        
-
 # Database load data
 # Maybe lode user data by ID then check meassages
+# keyword : Chat history / User Messages / Agent Messages / Database  / Postgresql
 #============================================================================#
-        
+        try:
+            agent_kwargs = {
+                "extra_prompt_messages": [MessagesPlaceholder(variable_name="memory")],
+            }
+            memory = ConversationBufferMemory(memory_key="memory", return_messages=True)
+
+
+            chat_history = get_user_messages(event.source.user_id)
+            # User message : row_data[0]
+            # Agent message : row_data[1]
+            for row_data in chat_history :
+                memory.save_context({"input": row_data[0]}, {"output": row_data[1]})
+        except Exception as e:
+            print('Database load data fail 取得使用者紀錄失敗')
+            print(e)
      
 
-# Call chatGPT to answer the question
+# Call LangChain Agent (chatGPT) to answer the question 
 # Maybe can select which models suit the question type
-#============================================================================#   
+# keyword : Tools / Agent / LangChain / ChatGPT 
+#============================================================================# 
         try :
-            global count
-            if event.message.type == 'text' and count < 5:
-                #ans = call_chatgpt(user_question = event.message.text , user_data = [] ,user_id = '')
-                ans = 'chatGPT'
-                count = count + 1
-            else:
-                ans = '今日使用上限已額滿' 
-        except Exception as e:
-            ans = ''
-            print("Generate responses fail")
-            print(e)
+            model = ChatOpenAI( 
+                model="gpt-4-1106-preview" ,
+                temperature= 0.9
+            )
+            tools = [RealEstateRecommendationTool()]
+            agent = initialize_agent(tools, 
+                            model, 
+                            agent= AgentType.OPENAI_FUNCTIONS, 
+                            verbose= False,
+                            memory = memory,
+                            agent_kwargs = agent_kwargs
+
+            )
+            agent_ans = agent.run(event.message.text)
         
-        print(ans)
+        except Exception as e :
+            print("Call LangChain Agent Fail")
+            print(e)
+            agent_ans = '伺服器維修中'
+        
 
 # Return response to user
+# Keyword : Return / Response / Line Response / MessagingApi
 #============================================================================#
-        rick_roll =['Never gonna give you up','Never gonna let you down']
         try :
             line_bot_api = MessagingApi(api_client)     
             line_bot_api.reply_message_with_http_info(
                 ReplyMessageRequest(
                     reply_token = event.reply_token,
-                    messages=[TextMessage(text = rick_roll[0]) , TextMessage(text = rick_roll[1]),TextMessage(text = user_name + ans )]
+                    messages=[TextMessage(text = user_name + agent_ans )]
                     # 回傳資料的地方
                 )
             )            
         except Exception as e:
-            print('TextMessageContent Fail')
+            print('Return response to user (TextMessageContent) Fail')
             print(e)
+
  # Save user and agent message
+ # Keyword : Save Data / Save Chat History / Database / Postgresql
 #============================================================================# 
-        user = {
-            "user_id" : event.source.user_id , 
-            "user_message": event.message.text , 
-            "timestamp" : event.timestamp
-        }
-        agent = {
-            "agent_message" : ans 
-        }
-        
-        save_data(user = user , agent = agent)
-
-
-
-# 當使用者傳送圖片觸發
-@handler.add(MessageEvent, message= ImageMessageContent)
-def handle_image_message(event):
-    with ApiClient(configuration) as api_client:
-        # 處理貼圖消息的代碼
-        try :
-                line_bot_api = MessagingApi(api_client)
-                line_bot_api.reply_message_with_http_info(
-                    ReplyMessageRequest(
-                        reply_token = event.reply_token,
-                        messages=[TextMessage(text = '這是一張照片誒，但我看不懂拉哈哈')]
-                        # 回傳資料的地方
-                    )
-                )
-        except Exception as e:
-                print('LImageMessageContent Fail')
-                print(e)
-
-
-@handler.add(MessageEvent, message=StickerMessageContent)
-def handle_sticker_message(event):
-    with ApiClient(configuration) as api_client:
         try:
-            line_bot_api = MessagingApi(api_client)
-            line_bot_api.reply_message_with_http_info(
-                    ReplyMessageRequest(
-                        reply_token = event.reply_token,
-                        messages=[TextMessage(text = '這是一張貼圖誒，但我看不懂拉哈哈')]
-                        # 回傳資料的地方
-                    )
-                )
+            user = {
+                "user_id" : event.source.user_id , 
+                "user_message": event.message.text , 
+                "timestamp" : event.timestamp
+            }
+            agent = {
+                "agent_message" : agent_ans 
+            }
+            save_data(user = user , agent = agent)
+
         except Exception as e:
-            # BUG 
-            print('StickerMessageContent Fail')
+            print('Save user and agent message Fail')
             print(e)
 
-
-@app.route("/testweb")
-def testweb():
-    #gpt_ans = call_chatgpt(user_question = '請問狗狗跑多快？' , user_data = [] ,user_id = '')
-    return 'I am testweb'
-
-@app.route("/")
-def root():
-    return '我好棒我正在運作'
 
     
 

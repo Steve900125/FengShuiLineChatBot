@@ -1,9 +1,11 @@
 flask
 gunicorn
-line-bot-sdk
+line-bot-sdk==3.5.0
 python-dotenv
 SQLAlchemy
 requests
-openai
-langchain
+openai==0.28.1
+langchain==0.0.325
 psycopg2
+pydantic
+pandas
