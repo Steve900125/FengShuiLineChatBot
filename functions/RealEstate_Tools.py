@@ -20,11 +20,12 @@ def search_target_house( city_county , district , price_upper_limit , price_lowe
     # Test Code 
     
     # 建立假資料
+    # 生成每個區都有2筆資料的 data 字典
     data = {
         'house_name': ['House_' + str(i) for i in range(1, 11)],
         'price': [random.randint(500, 2000) for _ in range(10)],  # 價格範圍設置為 500-2000 萬
-        'city_county': '臺北市',
-        'district': random.choices(['大安區', '大同區', '中山區', '松山區', '信義區'], k=10)
+        'city_county': ['臺北市'] * 10,
+        'district': [district for district in ['大安區', '大同區', '中山區', '松山區', '信義區'] for _ in range(2)]
     }
     df = pd.DataFrame(data)
     
