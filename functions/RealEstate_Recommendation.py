@@ -18,40 +18,38 @@ class RealEstateRecommendationInput(BaseModel):
     # "None" in the Field() also mean "Not Qequired Variable"
     # "..." in the Field() mean "Qequired Variable"
     city_county : str = Field(..., description = """
-            City name input by user For example, 台中->臺中市、台北->臺北市、雲林->雲林縣、 
-            Note: In Chinese, "台" and "臺" have the same meaning. Therefore, we uniformly use "臺". 
-            If a different input is provided, it will automatically be corrected to the standard county/city name.
-            採用繁體中文輸入
+            一律採用繁體中文輸入，這個變數 city_county 是臺灣的縣/市名稱
+            採用完整名稱作為輸入，例如 ： 台中->臺中市、台北->臺北市、雲林->雲林縣、 
+            記得 "台" 跟 "臺" 是相同意思，但一律採用 "臺" 作爲標準，遇到錯字請自動修正為標準輸入
         """ )
     
     district : Optional[str] = Field( None , description = """
-            District name input by user For example, 西區、中正區、大安區 
-            If there is a typographical error in the region's name,
-            please use the correct region name that you know from your records as the parameter. 
-            採用繁體中文輸入
+            一律採用繁體中文輸入，這個變數 district 是臺灣的區域名稱                         
+            採用完整名稱作為輸入，例如 ：  西區、中正區、大安區 
+            記得 "台" 跟 "臺" 是相同意思，但一律採用 "臺" 作爲標準，遇到錯字請自動修正為標準輸入
         """ )
  
     price_upper_limit : Optional[int] = Field(None ,  description = """
-            Enter the maximum budget amount, in units of ten thousand. For instance, '十萬' (one hundred thousand) 
-            should be input as 10, '1000萬' (ten million) should be input as 1000, and '500000' should be input as 50.
+            price_upper_limit 代表預算的金額上限，該變數的單位為萬
+            舉例來說 ： '十萬' -> 10 , '1000萬' -> 1000 , '50000000' -> 5000
+            如果對方有提供可以選擇放入
         """ )
     
     price_lower_limit : Optional[int] = Field(None , description= """
-            Enter the minimum budget amount, in units of ten thousand. For instance, '十萬' (one hundred thousand) 
-            should be input as 10, '1000萬' (ten million) should be input as 1000, and '500000' should be input as 50.
+            price_lower_limit 代表預算的金額下限，該變數的單位為萬
+            舉例來說 ： '十萬' -> 10 , '1000萬' -> 1000 , '50000000' -> 5000
+            如果對方有提供可以選擇放入
         """ )    
     
 class RealEstateRecommendationTool(BaseTool):
     name = 'search_target_house'
     description = """
-        User want to buy the house and this function helps users find the most suitable house based on their budget or location.
-        Input : The function has four parameters: "top_budget", "button_budget", "county/city", and "district".
-        Chage "台" to 臺 , use formal full name like 臺南市 彰化縣 , not 台南 彰化
-        If the user says 'approximately', take the value provided by the user as the base and add or subtract 50 million as the range. If the user only mentions one number, you can judge whether it's the upper limit or the lower limit; the program will automatically handle None values, so you don't need to forcefully assign a value.
-        Output: The target house data corresponds to the requirements.
-        The ouput must contain this information :
-        1. natural responsement
-        2. house information  : house name | price | location 
+        重點 ： 這是一個幫助使用者找到屬於自己想要的房屋資訊的程式
+        輸入 ： 透過 ( 縣市名稱 區域名稱 價格上限 價格下限 ) 來當作參數
+        當對方只給大約的價格時你可以上下加上 500 萬當作範圍輸入
+        輸出 ： 你必需像個最佳的客服回覆你找到的資料與問候，並且將資料以格式化方式回覆
+        格式如下 ： 房子名稱 ｜ 位置 ｜ 價格 
+        如果沒有你要的必要資訊或不清楚的情況你可以再詳細跟客戶做詢問
     """
     args_schema: Type[BaseModel] = RealEstateRecommendationInput
 
