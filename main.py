@@ -56,13 +56,15 @@ handler = WebhookHandler(secrect_api)
 #============================================================================#
 from functions.postgresql_function import save_data , get_user_messages
 
+# realestate  call import
+#============================================================================#
+from functions.RealEstate_Recommendation import RealEstateRecommendationTool
+
 # LangChain function call 
 #============================================================================#
 # Import things that are needed generically
 from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
-from functions.RealEstate_Recommendation import RealEstateRecommendationTool
-# gpt-3.5-turbo-0613
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 

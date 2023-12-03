@@ -8,9 +8,6 @@ from typing import Type
 
 from functions import RealEstate_Tools
 
-
-
-
 # 根據使用者條件決定符合條件的房地產資料回傳給使用者
 # 可以輸入縣市、區域、最高價格限制、最低價格限制
 # Input variables definition in here
@@ -49,6 +46,7 @@ class RealEstateRecommendationTool(BaseTool):
     description = """
         User want to buy the house and this function helps users find the most suitable house based on their budget or location.
         Input : The function has four parameters: "top_budget", "button_budget", "county/city", and "district".
+        Chage "台" to 臺 , use formal full name like 臺南市 彰化縣 , not 台南 彰化
         If the user says 'approximately', take the value provided by the user as the base and add or subtract 50 million as the range. If the user only mentions one number, you can judge whether it's the upper limit or the lower limit; the program will automatically handle None values, so you don't need to forcefully assign a value.
         Output: The target house data corresponds to the requirements.
         The ouput must contain this information :

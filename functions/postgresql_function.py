@@ -65,9 +65,13 @@ def get_user_messages( user_id : str):
         FROM 
             usermessage
         INNER JOIN 
-            agentmessage ON usermessage.user_id = %s 
-            AND usermessage.user_id = agentmessage.user_id 
-            AND usermessage.timestamp = agentmessage.timestamp;
+            agentmessage ON usermessage.user_id = agentmessage.user_id 
+            AND usermessage.timestamp = agentmessage.timestamp
+        WHERE 
+            usermessage.user_id = %s 
+        ORDER BY 
+            usermessage.timestamp DESC
+        LIMIT 5;
     '''
 
     try :
@@ -75,12 +79,10 @@ def get_user_messages( user_id : str):
         cursor = conn.cursor()
         cursor.execute(sql_join ,  user_target)
         data_list = cursor.fetchall()
-        # for user_row in data_list:
-        #     print(user_row[0])
-        #     print(user_row[1])
 
         cursor.close()
         conn.close()
+
         print(f"PostgreSQL Selecting Success")
         print(type(data_list))
         print(data_list)
@@ -89,4 +91,4 @@ def get_user_messages( user_id : str):
     except (Exception, psycopg2.Error) as error:
          print(f"Error PostgreSQL Selecting Fail: {error}")
 
-get_user_messages("U50103dd3166e13e2ffa18b6b2266c77f")
+#get_user_messages("U50103dd3166e13e2ffa18b6b2266c77f")
