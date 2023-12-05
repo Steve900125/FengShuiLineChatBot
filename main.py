@@ -47,7 +47,6 @@ configuration = Configuration(access_token=line_api_value )
 handler = WebhookHandler(secrect_api)
 # 'MY_CHANNEL_SECRET'
 
-
 # ChatGPT call import
 #============================================================================#
 # from functions.chatgpt_response import call_chatgpt
@@ -126,12 +125,14 @@ def handle_message(event):
             }
             memory = ConversationBufferMemory(memory_key="memory", return_messages=True)
 
-
             chat_history = get_user_messages(event.source.user_id)
             # User message : row_data[0]
             # Agent message : row_data[1]
-            for row_data in chat_history :
-                memory.save_context({"input": row_data[0]}, {"output": row_data[1]})
+            if chat_history != None :
+                for row_data in chat_history :
+                    memory.save_context({"input": row_data[0]}, {"output": row_data[1]})
+            else:
+                pass
         except Exception as e:
             print('Database load data fail 取得使用者紀錄失敗')
             print(e)
@@ -150,11 +151,12 @@ def handle_message(event):
             agent = initialize_agent(tools, 
                             model, 
                             agent= AgentType.OPENAI_FUNCTIONS, 
-                            verbose= False,
+                            verbose= True,
                             memory = memory,
+                            max_iterations = 5,
                             agent_kwargs = agent_kwargs
-
             )
+
             agent_ans = agent.run(event.message.text)
         
         except Exception as e :
@@ -194,7 +196,7 @@ def handle_message(event):
             save_data(user = user , agent = agent)
 
         except Exception as e:
-            print('Save user and agent message Fail')
+            print('Save user and agent messages Fail')
             print(e)
 
 

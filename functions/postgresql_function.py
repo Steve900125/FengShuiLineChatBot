@@ -3,7 +3,13 @@ from dotenv import load_dotenv
 import os
 from datetime import datetime
 
-env_path = '../.env'
+
+# 臭小子
+if __name__ == '__main__':
+    env_path = '../.env'
+else :
+    env_path = './.env'
+
 load_dotenv(dotenv_path = env_path)
 SQL_URL = os.getenv("SQL_URL")
 
@@ -84,11 +90,11 @@ def get_user_messages( user_id : str):
         conn.close()
 
         print(f"PostgreSQL Selecting Success")
-        print(type(data_list))
-        print(data_list)
+        #print(type(data_list))
+        #print(data_list)
         return data_list
 
     except (Exception, psycopg2.Error) as error:
          print(f"Error PostgreSQL Selecting Fail: {error}")
 
-#get_user_messages("U50103dd3166e13e2ffa18b6b2266c77f")
+get_user_messages("U50103dd3166e13e2ffa18b6b2266c77f")

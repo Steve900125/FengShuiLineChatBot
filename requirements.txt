@@ -5,7 +5,7 @@ python-dotenv
 SQLAlchemy
 requests
 openai==0.28.1
-langchain
+langchain==0.0.345
 psycopg2
 pydantic==2.4.2
 pandas
