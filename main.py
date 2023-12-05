@@ -153,7 +153,6 @@ def handle_message(event):
                             agent= AgentType.OPENAI_FUNCTIONS, 
                             verbose= True,
                             memory = memory,
-                            max_iterations = 5,
                             agent_kwargs = agent_kwargs
             )
 
