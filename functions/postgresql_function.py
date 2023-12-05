@@ -3,7 +3,6 @@ from dotenv import load_dotenv
 import os
 from datetime import datetime
 
-
 # 臭小子
 if __name__ == '__main__':
     env_path = '../.env'
@@ -12,16 +11,6 @@ else :
 
 load_dotenv(dotenv_path = env_path)
 SQL_URL = os.getenv("SQL_URL")
-
-# user :
-# user_id
-# user_message
-# timestamp
-
-# agent :
-# agent_id
-# agent_message
-# timestamp
 
 def save_data(user : dict ,  agent : dict):
     user_insert_sql = '''
@@ -77,7 +66,7 @@ def get_user_messages( user_id : str):
             usermessage.user_id = %s 
         ORDER BY 
             usermessage.timestamp DESC
-        LIMIT 5;
+        LIMIT 3;
     '''
 
     try :

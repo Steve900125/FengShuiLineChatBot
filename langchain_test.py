@@ -14,13 +14,13 @@ from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
 
-from datetime import datetime
 # Api key setting
 #============================================================================#
 from dotenv import load_dotenv
 
-
 load_dotenv()
+
+from datetime import datetime
 
 
 def Agent_Run(question):
@@ -38,7 +38,7 @@ def Agent_Run(question):
     else:
         print("Data Read Not Work")
     #============================================================================#
-    
+
     model = ChatOpenAI( 
                     model="gpt-4-1106-preview" ,
                     temperature= 0.9
@@ -56,7 +56,8 @@ def Agent_Run(question):
     try:
         curr_dt = datetime.now()
         timestamp = int(round(curr_dt.timestamp()))
-
+        print(curr_dt)
+        print(timestamp)
         user = {
                 "user_id" : "U50103dd3166e13e2ffa18b6b2266c77f" , 
                 "user_message": question , 
