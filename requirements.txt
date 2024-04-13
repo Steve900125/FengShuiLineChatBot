@@ -9,3 +9,5 @@ langchain==0.0.345
 psycopg2
 pydantic==2.4.2
 pandas
+opencv-python
+ultralytics
