@@ -1,12 +1,17 @@
+from pathlib import Path
 import psycopg2
 from dotenv import load_dotenv
 import os 
 
-load_dotenv()
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[0] 
+
+load_dotenv(ROOT / '.env')
 
 SQL_URL = os.getenv("SQL_URL")
 
 def postgres_test():
+
     try:
         conn = psycopg2.connect(SQL_URL)
         print(conn)
@@ -133,9 +138,9 @@ def get_user_messages( user_id : str):
 
 
 
-# postgres_test()
+postgres_test()
 #creat_table()
 #show_db_table()
 #insert_test()
-get_user_messages('U50103dd3166e13e2ffa18b6b2266c77f')
+#get_user_messages('U50103dd3166e13e2ffa18b6b2266c77f')
 
