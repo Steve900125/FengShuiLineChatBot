@@ -29,7 +29,9 @@ from linebot.v3.messaging import (
 )
 from linebot.v3.webhooks import (
     MessageEvent,
-    TextMessageContent
+    TextMessageContent,
+    ImageMessageContent
+    
 )
 
 # Api key setting
@@ -204,5 +206,21 @@ def handle_message(event):
             print(e)
 
 
-    
+@handler.add(MessageEvent, message= ImageMessageContent)
+def handle_image_message(event):
+    with ApiClient(configuration) as api_client:
+        # 處理貼圖消息的代碼
+        try :
+                line_bot_api = MessagingApi(api_client)
+                line_bot_api.reply_message_with_http_info(
+                    ReplyMessageRequest(
+                        reply_token = event.reply_token,
+                        messages=[TextMessage(text = '這是一張照片誒，但我看不懂拉哈哈' + str(event))]
+                        # 回傳資料的地方
+                    )
+                )
+        except Exception as e:
+                print('LImageMessageContent Fail')
+                print(e)
+
 

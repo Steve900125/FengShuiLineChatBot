@@ -136,11 +136,10 @@ def get_user_messages( user_id : str):
          print(f"Error PostgreSQL Selecting Fail: {error}")
 
 
-
-
-postgres_test()
-#creat_table()
-#show_db_table()
-#insert_test()
-#get_user_messages('U50103dd3166e13e2ffa18b6b2266c77f')
+if __name__ == "__main__":
+    postgres_test()
+    creat_table()
+    show_db_table()
+    insert_test()
+    #get_user_messages('U50103dd3166e13e2ffa18b6b2266c77f')
 
