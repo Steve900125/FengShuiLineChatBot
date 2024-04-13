@@ -25,6 +25,7 @@ from linebot.v3.messaging import (
     MessagingApi,
     ReplyMessageRequest,
     TextMessage,
+    MessagingApiBlob
     
 )
 from linebot.v3.webhooks import (
@@ -68,6 +69,20 @@ from langchain.agents import AgentType, initialize_agent
 from langchain.chat_models import ChatOpenAI
 from langchain.memory import ConversationBufferMemory
 from langchain.prompts import MessagesPlaceholder
+
+
+import feng_shui as fs
+import sys
+import shutil
+from pathlib import Path
+import platform
+
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[0]  # YOLO root directory
+if str(ROOT) not in sys.path:
+    sys.path.append(str(ROOT))  # add ROOT to PATH
+if platform.system() != 'Windows':
+    ROOT = ROOT.relative_to(Path.cwd())
 
 
 
@@ -209,18 +224,44 @@ def handle_message(event):
 @handler.add(MessageEvent, message= ImageMessageContent)
 def handle_image_message(event):
     with ApiClient(configuration) as api_client:
-        # 處理貼圖消息的代碼
-        try :
+        
+        images_path = ROOT / 'images'
+        try :   
+                
+                line_bot_blob_api = MessagingApiBlob(api_client)
+                message_content = line_bot_blob_api.get_message_content(message_id=event.message.id)
+
+                save_dir = images_path / f"{event.message.id}.jpg"
+                with open(save_dir, "wb") as img_file:
+                    img_file.write(message_content)
+                
+                fs_result = fs.run()
+
                 line_bot_api = MessagingApi(api_client)
                 line_bot_api.reply_message_with_http_info(
                     ReplyMessageRequest(
                         reply_token = event.reply_token,
-                        messages=[TextMessage(text = '這是一張照片誒，但我看不懂拉哈哈' + str(event))]
+                        messages=[TextMessage(text = str(fs_result))]
                         # 回傳資料的地方
                     )
                 )
+
+                # delet user data
+                if images_path.exists():
+                    shutil.rmtree(images_path)
+                    print(f"{images_path} has been deleted.")
+                    os.makedirs(images_path)     
+            
         except Exception as e:
+                
+                # delet user data
+                if images_path.exists():
+                    shutil.rmtree(images_path)
+                    print(f"{images_path} has been deleted.")
+                    os.makedirs(images_path) 
+
                 print('LImageMessageContent Fail')
                 print(e)
+
 
 
