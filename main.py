@@ -235,13 +235,17 @@ def handle_image_message(event):
                 with open(save_dir, "wb") as img_file:
                     img_file.write(message_content)
                 
-                fs_result = fs.run()
-
+                #fs_result = fs.run()
+                # str(fs_result)
+                if os.path.exists(save_dir) :
+                    res = "IMG save success !"
+                else:
+                    res = "IMG save fail !"
                 line_bot_api = MessagingApi(api_client)
                 line_bot_api.reply_message_with_http_info(
                     ReplyMessageRequest(
                         reply_token = event.reply_token,
-                        messages=[TextMessage(text = str(fs_result))]
+                        messages=[TextMessage(text = res)]
                         # 回傳資料的地方
                     )
                 )
