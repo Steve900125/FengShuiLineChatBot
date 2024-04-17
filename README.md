@@ -6,7 +6,7 @@ https://developers.line.biz/en/
 
 Download repostory
 ```
-
+git clone https://github.com/Steve900125/FengShuiLineChatBot.git
 ```
 
 Install requirements package
