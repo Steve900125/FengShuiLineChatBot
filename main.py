@@ -4,8 +4,7 @@ from flask import Flask
 from flask import request,abort
 
 app = Flask(__name__)
-if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5050)
+
 
 
 import requests
@@ -83,6 +82,11 @@ if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
 if platform.system() != 'Windows':
     ROOT = ROOT.relative_to(Path.cwd())
+
+
+@app.route("/index")
+def index():
+    return "success !"
 
 
 
@@ -235,17 +239,14 @@ def handle_image_message(event):
                 with open(save_dir, "wb") as img_file:
                     img_file.write(message_content)
                 
-                #fs_result = fs.run()
-                # str(fs_result)
-                if os.path.exists(save_dir) :
-                    res = "IMG save success !"
-                else:
-                    res = "IMG save fail !"
+                fs_result = fs.run()
+                door_problems = str(fs_result)
+                
                 line_bot_api = MessagingApi(api_client)
                 line_bot_api.reply_message_with_http_info(
                     ReplyMessageRequest(
                         reply_token = event.reply_token,
-                        messages=[TextMessage(text = res)]
+                        messages=[TextMessage(text = "發現門對門情況為 :" + str(door_problems))]
                         # 回傳資料的地方
                     )
                 )
@@ -267,5 +268,5 @@ def handle_image_message(event):
                 print('LImageMessageContent Fail')
                 print(e)
 
-
-
+if __name__ == '__main__':
+    app.run()

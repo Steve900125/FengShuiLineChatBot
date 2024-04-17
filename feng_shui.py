@@ -90,16 +90,20 @@ def run(
     if results is None : 
         return 0
 
+    door_total_problems = 0
     for result in results:
         problem_count = feng_shui_door( source = source , 
                                         floor_plan_model = floor_plan_model ,
                                         orientation_model = orientation_model ,
                                         result = result )
         print("門對門的形況出現 : ", problem_count)
+        door_total_problems += problem_count
 
     # Remove all predict file (resource)
     predict_path = ROOT / 'runs' / 'detect' / 'predict'
     shutil.rmtree(predict_path)
+
+    return door_total_problems
 
 if __name__ == "__main__":
     start = time.time()
