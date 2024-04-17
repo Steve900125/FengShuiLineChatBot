@@ -2,14 +2,13 @@ import psycopg2
 from dotenv import load_dotenv
 import os
 from datetime import datetime
+from pathlib import Path
 
-# 臭小子
-if __name__ == '__main__':
-    env_path = '../.env'
-else :
-    env_path = './.env'
+FILE = Path(__file__).resolve()
+ROOT = FILE.parents[1] 
 
-load_dotenv(dotenv_path = env_path)
+load_dotenv(ROOT / '.env')
+
 SQL_URL = os.getenv("SQL_URL")
 
 def save_data(user : dict ,  agent : dict):
@@ -79,8 +78,6 @@ def get_user_messages( user_id : str):
         conn.close()
 
         print(f"PostgreSQL Selecting Success")
-        #print(type(data_list))
-        #print(data_list)
         return data_list
 
     except (Exception, psycopg2.Error) as error:

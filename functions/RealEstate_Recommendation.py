@@ -44,8 +44,8 @@ class RealEstateRecommendationInput(BaseModel):
 class RealEstateRecommendationTool(BaseTool):
     name = 'search_target_house'
     description = """
-        重點 ： 這是一個幫助使用者找到屬於自己想要的房屋資訊的程式
         縣市區域採用繁體中文做處理避免亂碼影響程式執行
+        重點 ： 這是一個幫助使用者找到屬於自己想要的房屋資訊的程式
         輸入 ： 透過 ( 縣市名稱 區域名稱 價格上限 價格下限 ) 來當作參數
         當對方只給大約的價格時你可以上下加上 500 萬當作範圍輸入
         輸出 ： 你必需像個最佳的客服回覆你找到的資料與問候，並且將資料以格式化方式回覆
@@ -57,18 +57,9 @@ class RealEstateRecommendationTool(BaseTool):
     def _run(self, city_county : str , district : Optional[str] = None , price_upper_limit : Optional[int] = None, price_lower_limit : Optional[int] = None):
 
         target = RealEstate_Tools.search_target_house(city_county , district , price_upper_limit , price_lower_limit )
-
         return target
-
 
     def _arun(self, city_county : Optional[str], district : Optional[str] ,price_upper_limit : Optional[int] , price_lower_limit : Optional[int]):
         raise NotImplementedError("This tool does not support async")
 
-
-#schema = RealEstateRecommendationInput.model_json_schema()
-#print(schema)
-
-#hi = RealEstateRecommendationTool()
-#ans = hi._run(self= hi,city_county =  "臺北市", district = "中山區", price_upper_limit = 2000 , price_lower_limit = 50)
-#print(ans)
     

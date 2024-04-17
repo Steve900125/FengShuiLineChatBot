@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 import os 
 
 FILE = Path(__file__).resolve()
-ROOT = FILE.parents[0] 
+ROOT = FILE.parents[1] 
 
 load_dotenv(ROOT / '.env')
 
@@ -142,4 +142,5 @@ if __name__ == "__main__":
     show_db_table()
     insert_test()
     #get_user_messages('U50103dd3166e13e2ffa18b6b2266c77f')
+    print(FILE.parents[1])
 

@@ -1,4 +1,6 @@
 
+import cv2
+
 class FengShuiItem:
     def __init__(self, x1, y1, x2, y2, orientation):
         self.x1 = x1
@@ -17,8 +19,8 @@ class FengShuiItem:
         """Calculate the area of the door."""
         width = self.x2 - self.x1
         height = self.y2 - self.y1
-        return width * height
-    
+        return width * height   
+
     def __repr__(self):
         return f"Item ({self.x1}, {self.y1}, {self.x2}, {self.y2}, '{self.orientation}')"
 

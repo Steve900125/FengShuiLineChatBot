@@ -28,7 +28,7 @@ def orientation_classify(ROOT, item, source_path, model):
     # Find matching image files
     matching_files = list(crops_path.glob(f"{image_base_name}*.jpg"))
 
-    # Check if files are found
+    # Check if found files 
     if not matching_files:
         return None
     

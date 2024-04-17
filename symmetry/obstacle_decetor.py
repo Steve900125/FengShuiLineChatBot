@@ -81,7 +81,7 @@ def item_obstacle_decete(source, item_A, item_B , orientation):
             # |||||| 
             # ----->
             up =  point[1] - half_range
-            down = abs(point[1] +  half_range) # In image down is bigger
+            down = point[1] +  half_range 
             black_point_counter = 0
 
             # Avoid out of range
