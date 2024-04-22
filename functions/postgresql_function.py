@@ -83,4 +83,23 @@ def get_user_messages( user_id : str):
     except (Exception, psycopg2.Error) as error:
          print(f"Error PostgreSQL Selecting Fail: {error}")
 
-get_user_messages("U50103dd3166e13e2ffa18b6b2266c77f")
+if __name__ == "__main__":
+
+    user_id = "U50103dd3166e13e2ffa18b6b2266c77f"
+    # 獲取當前時間
+    current_dt = datetime.now()
+
+    # 將當前時間轉換為 UNIX 時間戳（以秒為單位）
+    timestamp = int(round(current_dt.timestamp()))# 獲取當前時間   
+        
+    user = {
+            'user_message' : '測試',
+            "user_id" : user_id ,
+            "timestamp" :  timestamp
+    }
+    agent = {
+            "agent_message" : "測試", 
+    }
+
+    save_data(user,  agent)
+    print(get_user_messages(user_id))

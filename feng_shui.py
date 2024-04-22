@@ -85,6 +85,9 @@ def run(
         orientation_model = ROOT / 'models' / 'yolov8_orientation_cls.pt',  # classification (Yolov8)
     ):
     
+    # Correspondent type result
+    final_result= {}
+
     results = yolo_dect.floor_plan_detcte(source = source,  model = floor_plan_model)
     # stop running
     if results is None : 
@@ -103,7 +106,9 @@ def run(
     predict_path = ROOT / 'runs' / 'detect' / 'predict'
     shutil.rmtree(predict_path)
 
-    return door_total_problems
+    final_result['door'] = door_total_problems
+
+    return final_result
 
 if __name__ == "__main__":
     start = time.time()
