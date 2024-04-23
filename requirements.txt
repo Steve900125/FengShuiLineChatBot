@@ -11,3 +11,5 @@ pydantic==2.4.2
 pandas
 opencv-python
 ultralytics
+langchain-community
+google-api-python-client

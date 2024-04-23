@@ -133,8 +133,9 @@ def handle_image_message(event):
                 fs_result = fs.run()
 
                 door_problems = "對門煞 : 圖片發現 {0} 個類似情況，如果數值為零代表不存在或是圖片種類錯誤".format(str(fs_result['door'])) 
+                door_advice = "發現平面圖中出現對門煞，發現 {0} 個類似情況，請給出原因合建議".format(str(fs_result['door']))
                 
-                agent_ans = Agent_Run(door_problems , event.source.user_id , event.timestamp)
+                agent_ans = Agent_Run( door_advice  , event.source.user_id , event.timestamp)
 
                 line_bot_api = MessagingApi(api_client)
                 line_bot_api.reply_message_with_http_info(

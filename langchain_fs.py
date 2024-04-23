@@ -8,8 +8,8 @@ from functions.RealEstate_Recommendation import RealEstateRecommendationTool
 
 # fengshui  call import
 #============================================================================#
-# from functions.FengShui_Recommendation import FengShuiRecommendationTool
-from langchain_community.tools.tavily_search import TavilySearchResults
+from functions.FengShui_Recommendation import FengShuiRecommendationTool
+
 
 # LangChain function call 
 #============================================================================#
@@ -27,6 +27,7 @@ from datetime import datetime
 
 load_dotenv()
 
+MY_TOOLS = [RealEstateRecommendationTool() , FengShuiRecommendationTool()]
 
 def Agent_Run(question , user_id  , timestamp ):
     # Set Memory
@@ -53,7 +54,7 @@ def Agent_Run(question , user_id  , timestamp ):
                     temperature= 0.9
                 )
     
-    tools = [ RealEstateRecommendationTool() ]
+    tools = MY_TOOLS 
     # , FengShuiRecommendationTool() 
     agent = initialize_agent(tools, 
                     model, 
