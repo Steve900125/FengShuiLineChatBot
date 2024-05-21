@@ -2,14 +2,22 @@
 #============================================================================#
 from functions.postgresql_function import save_data , get_user_messages
 
-# realestate  call import
+
+# Tools
+
+# Realestate 
 #============================================================================#
 from functions.RealEstate_Recommendation import RealEstateRecommendationTool
 
-# fengshui  call import
+# Fengshui 
 #============================================================================#
-# from functions.FengShui_Recommendation import FengShuiRecommendationTool
-from langchain_community.tools.tavily_search import TavilySearchResults
+from functions.FengShui_Recommendation import FengShuiRecommendationTool
+
+# Web search 
+#============================================================================#
+from langchain.utilities.tavily_search import TavilySearchAPIWrapper
+from langchain.tools.tavily_search import TavilySearchResults
+
 
 # LangChain function call 
 #============================================================================#
@@ -49,12 +57,14 @@ def Agent_Run(question , user_id  , timestamp ):
     memory.save_context({"input": sys_prompt }, {"output": '收到'})
 
     model = ChatOpenAI( 
-                    model="gpt-4-1106-preview" ,
+                    model="gpt-4o" ,
                     temperature= 0.9
                 )
-    
-    tools = [ RealEstateRecommendationTool() ]
-    # , FengShuiRecommendationTool() 
+    search = TavilySearchAPIWrapper()
+    tavily_tool = TavilySearchResults(api_wrapper=search)
+
+    tools = [ RealEstateRecommendationTool(), FengShuiRecommendationTool() ,tavily_tool]
+
     agent = initialize_agent(tools, 
                     model, 
                     agent= AgentType.OPENAI_FUNCTIONS, 

@@ -19,8 +19,9 @@ class FengShuiRecommendationInput(BaseModel):
     
     
 class FengShuiRecommendationTool(BaseTool):
-    name = 'search_target_house'
+    name = 'FengShui_advice'
     description = """
+        幫助使用者理解風水相關問題
         採用繁體中文做處理避免亂碼影響程式執行
         重點 ： 這是一個幫助使用者得到風水建議的功能
         輸入 ： 風水種類來當作參數

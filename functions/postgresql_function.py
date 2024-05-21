@@ -65,7 +65,7 @@ def get_user_messages( user_id : str):
             usermessage.user_id = %s 
         ORDER BY 
             usermessage.timestamp DESC
-        LIMIT 3;
+        LIMIT 5;
     '''
 
     try :
