@@ -13,3 +13,6 @@ opencv-python
 ultralytics
 langchain-community
 google-api-python-client
+imgur-python
+awscli
+boto3
