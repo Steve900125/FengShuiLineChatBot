@@ -28,7 +28,8 @@ CHANNEL_SECRECT_KEY = ""
 ```
 Create database and table columns ...
 ```
-python postgresql\render_sql_create.py  
+conda install psycopg2
+python initial\initial_all.py
 ```
 
 ### AWS upload image by S3

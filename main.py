@@ -47,7 +47,7 @@ handler = WebhookHandler(secrect_api)
 
 # LangChain function call 
 #============================================================================#
-from langchain_agent import Agent_Run
+from agent_main import run_line_agent
 
 import fengshui.assessment as fs
 import aws_boto3.aws as aws
@@ -94,7 +94,11 @@ def callback():
 def handle_message(event):
     with ApiClient(configuration) as api_client:
 
-        agent_ans = Agent_Run(event.message.text , event.source.user_id , event.timestamp)
+        agent_ans = run_line_agent(
+            user_id=event.source.user_id,
+            question=event.message.text,
+            timestamp=event.timestamp
+        )
 
         # Return response to user
         # Keyword : Return / Response / Line Response / MessagingApi
@@ -117,8 +121,15 @@ def handle_message(event):
 @handler.add(MessageEvent, message= ImageMessageContent)
 def handle_image_message(event):
     with ApiClient(configuration) as api_client:
-        
         images_path = ROOT / 'images'
+        # delet user data
+        if images_path.exists():
+            shutil.rmtree(images_path)
+            print(f"{images_path} has been deleted.")
+            os.makedirs(images_path) 
+        else:
+            os.makedirs(images_path) 
+        
         try :          
             line_bot_blob_api = MessagingApiBlob(api_client)
             message_content = line_bot_blob_api.get_message_content(message_id=event.message.id)
@@ -137,22 +148,27 @@ def handle_image_message(event):
 
             # 檢查是否有對門煞的情況
             if door_num > 0:
-                response_prompt_fs += "發現平面圖中出現對門煞，發現 {} 個類似情況，請給出原因合建議。".format(str(door_num))
+                response_prompt_fs += "發現平面圖中出現對門煞，發現 {} 個類似情況，以下是原因與建議。".format(str(door_num))
 
             # 檢查是否有入口相沖廚房的情況
             if ent_num > 0:
-                response_prompt_fs += "發現平面圖中出現大門相沖廚房，發現 {} 個類似情況，請給出原因合建議。".format(str(ent_num))
+                response_prompt_fs += "發現平面圖中出現大門相沖廚房，發現 {} 個類似情況，以下是原因與建議。".format(str(ent_num))
 
             messages = []
 
             # 如果有問題描述，將其加入 messages
             if response_prompt_fs:
                 messages.append(TextMessage(text=response_prompt_fs))
+                response_prompt_fs += '請幫我查詢風水問題的相關建議'
             else:
-                response_prompt_fs = "目前一切正常沒有檢測到門對門或是大門對廚房風水問題"
+                response_prompt_fs = "目前一切正常沒有檢測到風水問題僅需回復沒有發現相關問題"
 
             # 總結問題提示並傳給 Agent_Run 取得回覆
-            agent_ans = Agent_Run(response_prompt_fs, event.source.user_id, event.timestamp)
+            agent_ans = run_line_agent(
+                user_id=event.source.user_id,
+                question=response_prompt_fs,
+                timestamp=event.timestamp
+            )
 
             # 將 Agent 的回覆加入 messages
             messages.append(TextMessage(text=agent_ans))
@@ -181,7 +197,8 @@ def handle_image_message(event):
                     reply_token=event.reply_token,
                     messages=messages  # 傳遞所有組合的訊息，包括文字與圖片
                 )
-            )  
+            )
+        
             
         except Exception as e:
                 
