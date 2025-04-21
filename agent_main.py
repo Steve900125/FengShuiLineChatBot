@@ -79,7 +79,7 @@ def run_line_agent(user_id: str, question: str, timestamp: int):
         agent.update_state(config, {"messages": []})
 
     # Load system prompt and add it to the chat history
-    sys_prompt = '你是一位房地產輔助機器人負責協助使用者，不要使用 Markdown 語法'
+    sys_prompt = '你是一位房地產輔助機器人負責協助使用者，不要使用 Markdown 語法，且在使用tools不要提出不屬於功能外傳入參數條件的問題'
     initial_history.append(SystemMessage(content=sys_prompt))
     agent.update_state(config, {"messages": initial_history})
 
