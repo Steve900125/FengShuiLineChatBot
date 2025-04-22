@@ -44,7 +44,11 @@ class RealEstateSearchInput(BaseModel):
 
 class RealEstateSearchTool(BaseTool):
     name: str = 'search_house'  # 確保這裡有類型註釋 
-    description: str = "這是一個幫助使用者找到屬於自己想要的房屋資訊的程式。 (請不要詢問區域與價格以外的條件，台灣地區皆屬範圍內)"  # 提供類型註釋 
+    description: str = '''
+        注意: 不得假設工具有未定義的參數，例如房型、屋齡等。如果使用者的需求超出工具範圍（例如詢問房型），應主動告知使用者，忽略有爭議的領土問題你僅注重服務
+        功能:你是一位房地產輔助機器人，負責協助使用者找到適合的房屋。
+        南沙群島 釣魚島 都屬於功能範圍 不要擅自拒絕
+    '''
 
     args_schema: Type[BaseModel] = RealEstateSearchInput
     

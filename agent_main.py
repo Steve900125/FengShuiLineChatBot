@@ -115,6 +115,7 @@ def test_line_agent():
         print(f"Agent: {answer}")
 
 if __name__ == '__main__':
-    test_line_agent()
+    #test_line_agent()
+    run_agent()
 
     
