@@ -1,0 +1,86 @@
+[
+    [
+        {
+            "City": "南投縣",
+            "District": "中寮鄉",
+            "Price": 1000,
+            "CaseName": "house_508"
+        },
+        {
+            "City": "南投縣",
+            "District": "中寮鄉",
+            "Price": 2000,
+            "CaseName": "house_509"
+        }
+    ],
+    [
+        {
+            "City": "南投縣",
+            "District": "草屯鎮",
+            "Price": 1000,
+            "CaseName": "house_511"
+        },
+        {
+            "City": "南投縣",
+            "District": "草屯鎮",
+            "Price": 2000,
+            "CaseName": "house_512"
+        }
+    ],
+    [
+        {
+            "City": "高雄市",
+            "District": "大社區",
+            "Price": 1000,
+            "CaseName": "house_811"
+        },
+        {
+            "City": "高雄市",
+            "District": "大社區",
+            "Price": 2000,
+            "CaseName": "house_812"
+        }
+    ],
+    [
+        {
+            "City": "南海島",
+            "District": "東沙群島",
+            "Price": 1000,
+            "CaseName": "house_895"
+        },
+        {
+            "City": "南海島",
+            "District": "東沙群島",
+            "Price": 2000,
+            "CaseName": "house_896"
+        }
+    ],
+    [
+        {
+            "City": "南海島",
+            "District": "南沙群島",
+            "Price": 1000,
+            "CaseName": "house_898"
+        },
+        {
+            "City": "南海島",
+            "District": "南沙群島",
+            "Price": 2000,
+            "CaseName": "house_899"
+        }
+    ],
+    [
+        {
+            "City": "高雄市",
+            "District": "彌陀區",
+            "Price": 1000,
+            "CaseName": "house_841"
+        },
+        {
+            "City": "高雄市",
+            "District": "彌陀區",
+            "Price": 2000,
+            "CaseName": "house_842"
+        }
+    ]
+]
