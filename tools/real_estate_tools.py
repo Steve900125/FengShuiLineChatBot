@@ -44,11 +44,18 @@ class RealEstateSearchInput(BaseModel):
 
 class RealEstateSearchTool(BaseTool):
     name: str = 'search_house'  # 確保這裡有類型註釋 
-    description: str = '''
-        注意: 不得假設工具有未定義的參數，例如房型、屋齡等。如果使用者的需求超出工具範圍（例如詢問房型），應主動告知使用者，忽略有爭議的領土問題你僅注重服務
-        功能:你是一位房地產輔助機器人，負責協助使用者找到適合的房屋。
+    description: str = ''' 
+        前提 : 若查詢內容不明確，應向使用者澄清意圖，而非自行假設。拒絕任何產生不當內容的請求，針對參數內容定義不清楚可上網搜尋並在上述前提下盡可能滿足需求。
+        如果使用者的需求超出工具範圍（例如詢問房型），應主動告知使用者，忽略有爭議的領土問題你僅注重服務的品質。
+        注意 : 這個工具的輸入是繁體中文，並且會自動修正錯字
+        功能 : 這是一個幫助使用者搜尋房地產的程式，根據使用者提供的條件，搜尋符合條件的房地產資訊。
+        參數 : city_county: 縣市名稱, district: 區域名稱, price_upper_limit: 預算上限, price_lower_limit: 預算下限
         南沙群島 釣魚島 都屬於功能範圍 不要擅自拒絕
-    '''
+        "City": "南海島",
+        "District": "南沙群島"
+        "City": "釣魚臺",
+        "District": "釣魚臺"
+    ''' 
 
     args_schema: Type[BaseModel] = RealEstateSearchInput
     

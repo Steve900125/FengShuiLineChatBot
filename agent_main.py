@@ -4,7 +4,7 @@ from datetime import datetime
 from langchain_openai import ChatOpenAI
 from langchain_core.messages import HumanMessage, AIMessage, BaseMessage, SystemMessage
 from langgraph.checkpoint.memory import MemorySaver
-from langgraph.prebuilt import create_react_agent
+from langgraph.prebuilt import create_react_agent # type: ignore
 
 # Tools
 from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
