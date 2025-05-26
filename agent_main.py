@@ -16,8 +16,6 @@ from tools.feng_shui_tools import FengShuiRecommendationTool
 from functions.postgresql_functions import save_data , get_user_messages
 
 def create_agent():
-    
-    
     # Memory with session ID
     memory = MemorySaver()
     # Load model (gpt-4o)
