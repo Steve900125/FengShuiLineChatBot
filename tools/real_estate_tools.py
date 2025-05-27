@@ -51,7 +51,7 @@ class RealEstateSearchTool(BaseTool):
         功能 : 這是一個幫助使用者搜尋房地產的程式，根據使用者提供的條件，搜尋符合條件的房地產資訊。
         參數 : city_county: 縣市名稱, district: 區域名稱, price_upper_limit: 預算上限, price_lower_limit: 預算下限
         南沙群島 釣魚島 都屬於功能範圍 不要擅自拒絕
-        "City": "南海島",
+        "City": "高雄市",
         "District": "南沙群島"
         "City": "釣魚臺",
         "District": "釣魚臺"

@@ -251,8 +251,34 @@
             "CaseName": "house_563"
         }
     ],
-    [],
-    [],
+    [
+        {
+            "City": "嘉義縣",
+            "District": "大埔鄉",
+            "Price": 1000,
+            "CaseName": "house_565"
+        },
+        {
+            "City": "嘉義縣",
+            "District": "大埔鄉",
+            "Price": 2000,
+            "CaseName": "house_566"
+        }
+    ],
+    [
+        {
+            "City": "嘉義縣",
+            "District": "水上鄉",
+            "Price": 1000,
+            "CaseName": "house_568"
+        },
+        {
+            "City": "嘉義縣",
+            "District": "水上鄉",
+            "Price": 2000,
+            "CaseName": "house_569"
+        }
+    ],
     [
         {
             "City": "嘉義縣",
@@ -365,7 +391,20 @@
             "CaseName": "house_593"
         }
     ],
-    [],
+    [
+        {
+            "City": "嘉義縣",
+            "District": "溪口鄉",
+            "Price": 1000,
+            "CaseName": "house_595"
+        },
+        {
+            "City": "嘉義縣",
+            "District": "溪口鄉",
+            "Price": 2000,
+            "CaseName": "house_596"
+        }
+    ],
     [
         {
             "City": "嘉義縣",
@@ -548,7 +587,20 @@
             "CaseName": "house_176"
         }
     ],
-    [],
+    [
+        {
+            "City": "宜蘭縣",
+            "District": "大同鄉",
+            "Price": 1000,
+            "CaseName": "house_178"
+        },
+        {
+            "City": "宜蘭縣",
+            "District": "大同鄉",
+            "Price": 2000,
+            "CaseName": "house_179"
+        }
+    ],
     [
         {
             "City": "宜蘭縣",
@@ -983,8 +1035,34 @@
             "CaseName": "house_1016"
         }
     ],
-    [],
-    [],
+    [
+        {
+            "City": "屏東縣",
+            "District": "春日鄉",
+            "Price": 1000,
+            "CaseName": "house_1018"
+        },
+        {
+            "City": "屏東縣",
+            "District": "春日鄉",
+            "Price": 2000,
+            "CaseName": "house_1019"
+        }
+    ],
+    [
+        {
+            "City": "屏東縣",
+            "District": "獅子鄉",
+            "Price": 1000,
+            "CaseName": "house_1021"
+        },
+        {
+            "City": "屏東縣",
+            "District": "獅子鄉",
+            "Price": 2000,
+            "CaseName": "house_1022"
+        }
+    ],
     [
         {
             "City": "屏東縣",
@@ -1265,7 +1343,20 @@
             "CaseName": "house_473"
         }
     ],
-    [],
+    [
+        {
+            "City": "彰化縣",
+            "District": "田中鎮",
+            "Price": 1000,
+            "CaseName": "house_475"
+        },
+        {
+            "City": "彰化縣",
+            "District": "田中鎮",
+            "Price": 2000,
+            "CaseName": "house_476"
+        }
+    ],
     [
         {
             "City": "彰化縣",
@@ -2050,7 +2141,20 @@
             "CaseName": "house_257"
         }
     ],
-    [],
+    [
+        {
+            "City": "桃園市",
+            "District": "新屋區",
+            "Price": 1000,
+            "CaseName": "house_259"
+        },
+        {
+            "City": "桃園市",
+            "District": "新屋區",
+            "Price": 2000,
+            "CaseName": "house_260"
+        }
+    ],
     [
         {
             "City": "桃園市",
@@ -4041,16 +4145,16 @@
     ],
     [
         {
-            "City": "臺中市",
-            "District": "東勢區",
+            "City": "雲林縣",
+            "District": "東勢鄉",
             "Price": 1000,
-            "CaseName": "house_385"
+            "CaseName": "house_619"
         },
         {
-            "City": "臺中市",
-            "District": "東勢區",
+            "City": "雲林縣",
+            "District": "東勢鄉",
             "Price": 2000,
-            "CaseName": "house_386"
+            "CaseName": "house_620"
         }
     ],
     [
@@ -4433,16 +4537,16 @@
     ],
     [
         {
-            "City": "南海島",
+            "City": "高雄市",
             "District": "東沙群島",
             "Price": 1000,
-            "CaseName": "house_895"
+            "CaseName": "house_814"
         },
         {
-            "City": "南海島",
+            "City": "高雄市",
             "District": "東沙群島",
             "Price": 2000,
-            "CaseName": "house_896"
+            "CaseName": "house_815"
         }
     ],
     [
@@ -4807,6 +4911,48 @@
             "District": "茄萣區",
             "Price": 2000,
             "CaseName": "house_893"
+        }
+    ],
+    [
+        {
+            "City": "南海島",
+            "District": "南沙群島",
+            "Price": 1000,
+            "CaseName": "house_898"
+        },
+        {
+            "City": "南海島",
+            "District": "南沙群島",
+            "Price": 2000,
+            "CaseName": "house_899"
+        }
+    ],
+    [
+        {
+            "City": "南海島",
+            "District": "南沙群島",
+            "Price": 1000,
+            "CaseName": "house_898"
+        },
+        {
+            "City": "南海島",
+            "District": "南沙群島",
+            "Price": 2000,
+            "CaseName": "house_899"
+        }
+    ],
+    [
+        {
+            "City": "高雄市",
+            "District": "南沙群島",
+            "Price": 1000,
+            "CaseName": "house_817"
+        },
+        {
+            "City": "高雄市",
+            "District": "南沙群島",
+            "Price": 2000,
+            "CaseName": "house_818"
         }
     ]
 ]

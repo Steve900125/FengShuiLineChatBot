@@ -11,6 +11,7 @@ from langchain_community.utilities.tavily_search import TavilySearchAPIWrapper
 from langchain_community.tools.tavily_search.tool import TavilySearchResults
 from tools.real_estate_tools import RealEstateReserveTool, RealEstateSearchTool
 from tools.feng_shui_tools import FengShuiRecommendationTool
+from tools.area_info_tools import AreaInformationTool
 
 #  SQL database
 from functions.postgresql_functions import save_data , get_user_messages
@@ -23,7 +24,11 @@ def create_agent():
     # Load tools
     search = TavilySearchAPIWrapper()
     tavily_tool = TavilySearchResults(api_wrapper=search, max_results=2)
-    tools = [RealEstateReserveTool(), RealEstateSearchTool(), FengShuiRecommendationTool(),tavily_tool]
+    tools = [RealEstateReserveTool(), 
+             RealEstateSearchTool(), 
+             FengShuiRecommendationTool(),
+             AreaInformationTool(),
+             tavily_tool]
     agent_executor = create_react_agent(model, tools, checkpointer=memory)
     
     return agent_executor

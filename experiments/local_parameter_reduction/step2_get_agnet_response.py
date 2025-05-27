@@ -38,7 +38,7 @@ def append_null_search_log():
 
 
 def one_time_agent(question: str) -> str:
-    time.sleep(5)
+    time.sleep(4)
     agent = create_agent()
     config = {'configurable': {'thread_id': 'tester'}}
     sys_prompt = '''
@@ -46,6 +46,13 @@ def one_time_agent(question: str) -> str:
     2. 請不要提問使用者不存在的功能例如房型等
     3. 僅依照現有存在的參數描述做提問
     4. 若只提供區資訊而該縣市只有一個可不用詢問，先由區反推縣市
+    5. 推估縣市時優先呼叫工具area-information查詢找出縣市名稱做比對避免幻覺出現
+    請確保符合所有要求
+    你的工具有這些功能 RealEstateReserveTool(), 
+             RealEstateSearchTool(), 
+             FengShuiRecommendationTool(),
+             AreaInformationTool(),
+             tavily_tool
     '''
     SystemMessage(content=sys_prompt)
     agent.update_state(config, {'messages': sys_prompt})
@@ -141,8 +148,11 @@ def main():
     print(f'Evaluation completed. Summary: {summary}')
 
 if __name__ == '__main__':
-    try:
-        main()
-    except Exception as e:
-        print(f"Unexpected error: {e}")
-        sys.exit(1)
+    question = '"我要找高雄南沙群島的房子，價格在2000萬以下"'
+    ans = one_time_agent(question)
+    print(ans)
+    # try:
+    #     main()
+    # except Exception as e:
+    #     print(f"Unexpected error: {e}")
+    #     sys.exit(1)
