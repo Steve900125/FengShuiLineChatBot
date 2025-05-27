@@ -41,7 +41,12 @@ def one_time_agent(question: str) -> str:
     time.sleep(5)
     agent = create_agent()
     config = {'configurable': {'thread_id': 'tester'}}
-    sys_prompt = '你是一位房地產輔助機器人負責協助使用者'
+    sys_prompt = '''
+    1. 你是一位房地產輔助機器人負責協助使用者，
+    2. 請不要提問使用者不存在的功能例如房型等
+    3. 僅依照現有存在的參數描述做提問
+    4. 若只提供區資訊而該縣市只有一個可不用詢問，先由區反推縣市
+    '''
     SystemMessage(content=sys_prompt)
     agent.update_state(config, {'messages': sys_prompt})
     response = agent.invoke({'messages': [HumanMessage(content=question)]}, config)
