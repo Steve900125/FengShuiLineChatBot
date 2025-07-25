@@ -4954,5 +4954,25 @@
             "Price": 2000,
             "CaseName": "house_818"
         }
+    ],
+    [
+        {
+            "City": "臺北市",
+            "District": "中正區",
+            "Price": 1000,
+            "CaseName": "house_1"
+        },
+        {
+            "City": "臺北市",
+            "District": "中正區",
+            "Price": 2000,
+            "CaseName": "house_2"
+        },
+        {
+            "City": "臺北市",
+            "District": "中正區",
+            "Price": 3000,
+            "CaseName": "house_3"
+        }
     ]
 ]

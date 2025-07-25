@@ -142,17 +142,14 @@ def handle_image_message(event):
 
             response_prompt_fs = ""
 
-            # 檢查對門煞與入口相沖廚房的問題
-            door_num = len(fs_image_results['door_to_door'])
-            ent_num = len(fs_image_results['entrance_to_kitchen'])
-
+    
             # 檢查是否有對門煞的情況
-            if door_num > 0:
-                response_prompt_fs += "發現平面圖中出現對門煞，發現 {} 個類似情況，以下是原因與建議。".format(str(door_num))
+            if fs_image_results['door_to_door']:
+                response_prompt_fs += "發現平面圖中出現對門煞，以下是原因與建議。"
 
             # 檢查是否有入口相沖廚房的情況
-            if ent_num > 0:
-                response_prompt_fs += "發現平面圖中出現大門相沖廚房，發現 {} 個類似情況，以下是原因與建議。".format(str(ent_num))
+            if fs_image_results['entrance_to_kitchen']:
+                response_prompt_fs += "發現平面圖中出現大門相沖廚房，以下是原因與建議。"
 
             messages = []
 
@@ -173,7 +170,7 @@ def handle_image_message(event):
             # 將 Agent 的回覆加入 messages
             messages.append(TextMessage(text=agent_ans))
    
-            if door_num > 0:
+            if fs_image_results['door_to_door']:
                 for image_path in fs_image_results['door_to_door']:
                     url = aws.upload_to_aws(local_file= str(image_path), 
                                             bucket_name= 'fschatbot', 
@@ -182,7 +179,7 @@ def handle_image_message(event):
                     mes = ImageMessage(original_content_url= url , preview_image_url= url )
                     messages.append(mes)
 
-            if ent_num > 0:
+            if fs_image_results['entrance_to_kitchen']:
                 for image_path in fs_image_results['entrance_to_kitchen']:
                     url = aws.upload_to_aws(local_file= str(image_path), 
                                             bucket_name= 'fschatbot', 

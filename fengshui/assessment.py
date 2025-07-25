@@ -402,14 +402,17 @@ def run():
 
     for result in results:
         door_result = total_object_to_object(objects_name=door_to_door, result=result, orient_check=orient_check)
+        print('door_to_door:', len(door_result))
+        #print('image len:', len(door_result['image_path']))
         if door_result is not None:
             chatbot_images['door_to_door'].append(door_result['image_path'])
         
         entr_result = total_object_to_object(objects_name=entrance_to_kitchen, result=result, orient_check=orient_check)
         if entr_result is not None:
-            chatbot_images['entrance_to_kitchen'].append( entr_result['image_path'])
-    
-    return  chatbot_images
+            chatbot_images['entrance_to_kitchen'].append(entr_result['image_path'])
+    # BUG 這裡應該也要回傳數量而非圖片路徑
+    # Note: 這裡應該要是 list 對應 door_result 和 entr_result 主程式要再修正
+    return chatbot_images
 
 
 if __name__ == "__main__":

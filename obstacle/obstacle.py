@@ -176,7 +176,7 @@ def items_obstacle_detect(image_path: Path, items: List[Item]) -> Dict[str, any]
     floor_plan = apply_white_boxes(floor_plan=floor_plan, items=items)
 
     # Check obstacle
-    scan_range = max(items[0].get_length_value(), items[1].get_length_value())
+    scan_range = min(items[0].get_length_value(), items[1].get_length_value())
     max_black_point = points_check(floor_plan, points_line, scan_range, items[0].orientation)
 
     rate =  max_black_point / scan_range if scan_range > 0 else 0
